@@ -1,16 +1,17 @@
-import app from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, FieldPath, getDocs } from "firebase/firestore"; 
+import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 import firebaseConfig from "./config";
 
 class Firebase {
   constructor() {
-    app.initializeApp(firebaseConfig);
-
-    this.storage = app.storage();
-    this.db = app.firestore();
-    this.auth = app.auth();
+    console.log('initialze my app with firebase config', firebaseConfig)
+    const app = initializeApp(firebaseConfig);
+    this.app = app;
+    this.storage = getStorage(app);
+    this.db = getFirestore(app, 'blindboxgoods');
+    this.auth = getAuth(app);
   }
 
   // AUTH ACTIONS ------------
@@ -34,9 +35,15 @@ class Firebase {
 
   passwordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
-  addUser = (id, user) => this.db.collection("users").doc(id).set(user);
-
-  getUser = (id) => this.db.collection("users").doc(id).get();
+  addUser = (id, user) => {
+    const userDocRef = doc(this.db, "users", id);
+    return setDoc(userDocRef, user); 
+  }
+  
+  getUser = (id) => { 
+    const userDocRef = doc(this.db, "users", id);
+    return getDoc(userDocRef, user);  
+  }
 
   passwordUpdate = (password) => this.auth.currentUser.updatePassword(password);
 
@@ -80,8 +87,10 @@ class Firebase {
         .catch((error) => reject(error));
     });
 
-  updateProfile = (id, updates) =>
-    this.db.collection("users").doc(id).update(updates);
+  updateProfile = (id, updates) => {
+    const userDocRef = doc(this.db, "users", id);
+    return updateDoc(userDocRef, updates);  
+  }
 
   onAuthStateChanged = () =>
     new Promise((resolve, reject) => {
@@ -94,15 +103,19 @@ class Firebase {
       });
     });
 
-  saveBasketItems = (items, userId) =>
-    this.db.collection("users").doc(userId).update({ basket: items });
-
+  saveBasketItems = (items, userId) => {
+    const userDocRef = doc(this.db, "users", id);
+    return updateDoc(userDocRef, { basket: items });  
+  }
   setAuthPersistence = () =>
     this.auth.setPersistence(app.auth.Auth.Persistence.LOCAL);
 
   // // PRODUCT ACTIONS --------------
 
-  getSingleProduct = (id) => this.db.collection("products").doc(id).get();
+  getSingleProduct = (id) => {
+    const collectionDocRef = doc(this.db, "products", id);
+    return getDoc(collectionDocRef);  
+  }
 
   getProducts = (lastRefKey) => {
     let didTimeout = false;
@@ -116,8 +129,8 @@ class Firebase {
               .orderBy(app.firestore.FieldPath.documentId())
               .startAfter(lastRefKey)
               .limit(12);
-
             const snapshot = await query.get();
+            console.log("firestore products snapshot", snapshot)
             const products = [];
             snapshot.forEach((doc) =>
               products.push({ id: doc.id, ...doc.data() })
@@ -135,13 +148,15 @@ class Firebase {
           }, 15000);
 
           try {
-            const totalQuery = await this.db.collection("products").get();
+            const collectionDocRef = collection(this.db, "products");
+            const totalQuery = await getDoc(collectionDocRef);
             const total = totalQuery.docs.length;
-            const query = this.db
-              .collection("products")
-              .orderBy(app.firestore.FieldPath.documentId())
-              .limit(12);
-            const snapshot = await query.get();
+            const q = query(
+              productsCollectionRef,
+              orderBy(FieldPath.documentId()),
+              limit(12)
+            );
+            const snapshot = await getDocs(q);
 
             clearTimeout(timeout);
             if (!didTimeout) {
@@ -167,8 +182,7 @@ class Firebase {
 
     return new Promise((resolve, reject) => {
       (async () => {
-        const productsRef = this.db.collection("products");
-
+        const collectionDocRef = collection(this.db, "products");
         const timeout = setTimeout(() => {
           didTimeout = true;
           reject(new Error("Request timeout, please try again"));
@@ -244,10 +258,14 @@ class Firebase {
       .limit(itemsCount)
       .get();
 
-  addProduct = (id, product) =>
-    this.db.collection("products").doc(id).set(product);
-
-  generateKey = () => this.db.collection("products").doc().id;
+  addProduct = (id, product) => {
+    const collectionDocRef = doc(this.db, "products", id);
+    return setDoc(collectionDocRef, product); 
+  }
+  generateKey = () => {
+    const collectionDocRef = doc(this.db, "products", id);
+    return doc(productsCollectionRef).id; 
+  };
 
   storeImage = async (id, folder, imageFile) => {
     const snapshot = await this.storage.ref(folder).child(id).put(imageFile);
@@ -258,10 +276,15 @@ class Firebase {
 
   deleteImage = (id) => this.storage.ref("products").child(id).delete();
 
-  editProduct = (id, updates) =>
-    this.db.collection("products").doc(id).update(updates);
+  editProduct = (id, updates) => {
+    const collectionDocRef = doc(this.db, "products", id);
+    return updateDoc(collectionDocRef, updates); 
+  };
 
-  removeProduct = (id) => this.db.collection("products").doc(id).delete();
+  removeProduct = (id) => { 
+    const docRef = doc(this.db, "products", id);
+    return deleteDoc(docRef);
+  };
 }
 
 const firebaseInstance = new Firebase();
