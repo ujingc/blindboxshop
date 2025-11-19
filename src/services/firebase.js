@@ -1,12 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, FieldPath, getDocs } from "firebase/firestore"; 
+import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, FieldPath, getDocs, query,
+  orderBy, startAfter, documentId, limit } from "firebase/firestore"; 
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import firebaseConfig from "./config";
 
 class Firebase {
   constructor() {
-    console.log('initialze my app with firebase config', firebaseConfig)
     const app = initializeApp(firebaseConfig);
     this.app = app;
     this.storage = getStorage(app);
@@ -117,65 +117,57 @@ class Firebase {
     return getDoc(collectionDocRef);  
   }
 
-  getProducts = (lastRefKey) => {
-    let didTimeout = false;
+ getProducts = async (lastRefKey) => { // lastRefKey should ideally be a DocumentSnapshot
+    try {
+        const productsCollectionRef = collection(this.db, "products");
+        let products = [];
+        let lastKey = null;
+        let total = 0; // Initialize total
 
-    return new Promise((resolve, reject) => {
-      (async () => {
         if (lastRefKey) {
-          try {
-            const query = this.db
-              .collection("products")
-              .orderBy(app.firestore.FieldPath.documentId())
-              .startAfter(lastRefKey)
-              .limit(12);
-            const snapshot = await query.get();
-            console.log("firestore products snapshot", snapshot)
-            const products = [];
-            snapshot.forEach((doc) =>
-              products.push({ id: doc.id, ...doc.data() })
-            );
-            const lastKey = snapshot.docs[snapshot.docs.length - 1];
-
-            resolve({ products, lastKey });
-          } catch (e) {
-            reject(e?.message || ":( Failed to fetch products.");
-          }
-        } else {
-          const timeout = setTimeout(() => {
-            didTimeout = true;
-            reject(new Error("Request timeout, please try again"));
-          }, 15000);
-
-          try {
-            const collectionDocRef = collection(this.db, "products");
-            const totalQuery = await getDoc(collectionDocRef);
-            const total = totalQuery.docs.length;
+            // Construct query with startAfter for pagination
             const q = query(
-              productsCollectionRef,
-              orderBy(FieldPath.documentId()),
-              limit(12)
+                productsCollectionRef,
+                orderBy(documentId()),
+                startAfter(lastRefKey), // lastRefKey must be a DocumentSnapshot object
+                limit(12)
             );
-            const snapshot = await getDocs(q);
-
-            clearTimeout(timeout);
-            if (!didTimeout) {
-              const products = [];
-              snapshot.forEach((doc) =>
+            const snapshot = await getDocs(q); // Execute the query
+            snapshot.forEach((doc) =>
                 products.push({ id: doc.id, ...doc.data() })
-              );
-              const lastKey = snapshot.docs[snapshot.docs.length - 1];
-
-              resolve({ products, lastKey, total });
+            );
+            if (snapshot.docs.length > 0) {
+                lastKey = snapshot.docs[snapshot.docs.length - 1];
             }
-          } catch (e) {
-            if (didTimeout) return;
-            reject(e?.message || ":( Failed to fetch products.");
-          }
+
+            return { products, lastKey };
+
+        } else {
+            // Initial load without lastRefKey
+            // Get total count (this will read all document metadata)
+            const totalSnapshot = await getDocs(productsCollectionRef);
+            total = totalSnapshot.size;
+            // Get the first 12 products
+            const q = query(
+                productsCollectionRef,
+                orderBy(documentId()),
+                limit(12)
+            );
+            const snapshot = await getDocs(q); // Execute the query
+            snapshot.forEach((doc) =>
+                products.push({ id: doc.id, ...doc.data() })
+            );
+            if (snapshot.docs.length > 0) {
+                lastKey = snapshot.docs[snapshot.docs.length - 1];
+            }
+
+            return { products, lastKey, total };
         }
-      })();
-    });
-  };
+    } catch (e) { // Use 'any' for type-safety or define a more specific error type
+        console.error("Failed to fetch products:", e);
+        throw new Error(e?.message || ":( Failed to fetch products.");
+    }
+}
 
   searchProducts = (searchKey) => {
     let didTimeout = false;
