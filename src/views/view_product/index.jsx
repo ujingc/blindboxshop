@@ -49,7 +49,9 @@ const ViewProduct = () => {
   };
 
   const handleAddToBasket = () => {
-    addToBasket({ ...product, selectedColor, selectedSize: selectedSize || product.sizes[0] });
+    if(product){
+    addToBasket({ ...product, selectedColor, selectedSize: selectedSize || '0' });
+    }
   };
 
   return (

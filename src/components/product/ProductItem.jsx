@@ -20,7 +20,7 @@ const ProductItem = ({ product, isItemOnBasket, addToBasket }) => {
   const itemOnBasket = isItemOnBasket ? isItemOnBasket(product.id) : false;
 
   const handleAddToBasket = () => {
-    if (addToBasket) addToBasket({ ...product, selectedSize: product.sizes[0] });
+    if (addToBasket && product) addToBasket({ ...product, selectedSize: '0' });
   };
 
   return (
@@ -52,7 +52,7 @@ const ProductItem = ({ product, isItemOnBasket, addToBasket }) => {
               {product.name || <Skeleton width={80} />}
             </h5>
             <p className="product-card-brand">
-              {product.brand || <Skeleton width={60} />}
+              {product.type || <Skeleton width={60} />}
             </p>
             <h4 className="product-card-price">
               {product.price ? displayMoney(product.price) : <Skeleton width={40} />}
