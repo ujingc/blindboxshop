@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { clearRecentSearch, removeSelectedRecent } from '@/redux/actions/filterActions';
+import Badge from './Badge';
 
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -66,8 +67,20 @@ const SearchBar = () => {
 
   return (
     <>
+      <div className="searchtoggler">
+        <Badge>
+          <button
+            className="button-link navigation-menu-link basket-toggle"
+            // disabled={basketDisabledpathnames.includes(pathname)}
+            // onClick={onClickToggle}
+            type="button"
+          >
+            <SearchOutlined style={{ fontSize: '2.4rem' }} />
+          </button>
+        </Badge>
+      </div>
       <div className="searchbar" ref={searchbarRef}>
-        <SearchOutlined className="searchbar-icon" />
+          <SearchOutlined className="searchbar-icon" />
         <input
           className="search-input searchbar-input"
           onChange={onSearchChange}
