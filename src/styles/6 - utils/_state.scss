@@ -11,11 +11,19 @@
   overflow-y: hidden;
 }
 
+.is-searchbar-open {
+  overflow-y: hidden;
+}
+
 .is-selected-payment {
   opacity: 1;
 }
 
 .is-basket-open .basket {
+  transform: translateX(0);
+}
+
+.is-searchbar-open .basket {
   transform: translateX(0);
 }
 

@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { FilterOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { FilterOutlined, ShoppingOutlined, SearchOutlined } from '@ant-design/icons';
 import * as ROUTE from '@/constants/routes';
 import logo from '@/images/logo-full.png';
 import React, { useEffect, useRef } from 'react';
@@ -12,7 +12,7 @@ import BasketToggle from '../basket/BasketToggle';
 import Badge from './Badge';
 import FiltersToggle from './FiltersToggle';
 import MobileNavigation from './MobileNavigation';
-import SearchBar from './SearchBar';
+import SearchBarToggle from '../searchbar/SearchBarToggle';
 
 const Navigation = () => {
   const navbar = useRef(null);
@@ -85,8 +85,22 @@ const Navigation = () => {
           </button>
         </FiltersToggle>
       )}
-      <SearchBar />
       <ul className="navigation-menu">
+        <li className="navigation-menu-item">
+          <SearchBarToggle>
+            {({ onClickToggle }) => (
+              <button
+                className="button-link navigation-menu-link searchbar-toggle"
+                onClick={onClickToggle}
+                type="button"
+              >
+                <Badge count={0}>
+                  <SearchOutlined style={{ fontSize: '2.4rem' }} />
+                </Badge>
+              </button>
+            )}
+          </SearchBarToggle>
+        </li>
         <li className="navigation-menu-item">
           <BasketToggle>
             {({ onClickToggle }) => (
