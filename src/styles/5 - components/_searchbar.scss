@@ -5,11 +5,28 @@
 }
 
 .searchbar {
-  width: 400px;
-  display: flex;
-  position: relative;
-  visibility: hidden;
+  width: 100%;
+  height: 20vh;
+  background: $white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  transform: translateY(-100%);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, .08);
+  @include bezier-transition(transform);
+  z-index: map-get($z-index, 'basket');
+
+  @include mobile {
+    width: 100%;
+  }
 }
+
+.searchbar-toggle {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 
 .search-input {
   padding-left: $xl-size !important;
@@ -80,8 +97,7 @@
 .searchbar-icon {
   position: absolute;
   left: $m-size;
-  top: 0;
-  bottom: 0;
+  top: 1.0rem;
   margin: auto;
   color: #7a7a7a;
   font-size: 1.6rem;

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "salinaka-ecommerce"
-  }
+    "default": "blindboxshop",
+    "staging": "blindboxshop-25dae"
+  },
+  "targets": {},
+  "etags": {}
 }
