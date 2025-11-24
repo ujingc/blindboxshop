@@ -15,4 +15,4 @@ export { default as Preloader } from './Preloader';
 export { default as PriceRange } from './PriceRange';
 export { default as SearchBar } from '../searchbar/SearchBar';
 export { default as SocialLogin } from './SocialLogin';
-
+import { default as SearchBar2 } from '../searchbar/SearchBar2';

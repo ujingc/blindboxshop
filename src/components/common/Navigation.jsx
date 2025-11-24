@@ -9,10 +9,10 @@ import {
 } from 'react-router-dom';
 import UserAvatar from '@/views/account/components/UserAvatar';
 import BasketToggle from '../basket/BasketToggle';
+import SearchBarToggle from '../searchbar/SearchBarToggle';
 import Badge from './Badge';
 import FiltersToggle from './FiltersToggle';
 import MobileNavigation from './MobileNavigation';
-import SearchBarToggle from '../searchbar/SearchBarToggle';
 
 const Navigation = () => {
   const navbar = useRef(null);

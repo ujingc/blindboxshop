@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { clearRecentSearch, removeSelectedRecent } from '@/redux/actions/filterActions';
 import Badge from '../common/Badge';
-import SearchbarToggle from './SearchBarToggle';
 
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('');
