@@ -171,7 +171,6 @@ class Firebase {
 
   searchProducts = async (searchKey) => { // Added type for searchKey
     console.log('calling searchProducts from firebase instance');
-    console.log("db: ", this.db); // This should now correctly log your Firestore instance
 
     if (!this.db) {
       // Defensive check, though the arrow function should prevent this.
@@ -180,8 +179,6 @@ class Firebase {
     }
 
     try {
-      console.log('search key: ', searchKey)
-      console.log('db: ',this.db)
       const productsCollectionRef = collection(this.db, "products");
       // Query for name match (prefix search)
       const searhNameQuery = query(
@@ -209,7 +206,6 @@ class Firebase {
       const searchedNameProducts = [];
       const searchedKeywordsProducts = [];
       let lastKey = null; // Will only store the lastKey from the name search for pagination
-      console.log('nameSnaps:', nameSnaps)
       if (!nameSnaps.empty) {
         nameSnaps.forEach((doc) => {
           searchedNameProducts.push({ id: doc.id, ...doc.data() });

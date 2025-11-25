@@ -103,3 +103,8 @@ h6 {
   animation: fadeIn .5s ease;
   position: relative;
 }
+
+
+.blurred {
+  filter: blur(5px);
+}

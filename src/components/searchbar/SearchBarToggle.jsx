@@ -4,8 +4,10 @@ const SearchBarToggle = ({ children }) => {
   const onClickToggle = () => {
     if (document.body.classList.contains('is-searchbar-open')) {
       document.body.classList.remove('is-searchbar-open');
+      document.body.querySelector('.content').classList.remove('blurred');
     } else {
       document.body.classList.add('is-searchbar-open');
+      document.body.querySelector('.content').classList.add('blurred');
     }
   };
 
@@ -16,6 +18,7 @@ const SearchBarToggle = ({ children }) => {
 
     if (!closest && document.body.classList.contains('is-searchbar-open') && !toggle && !closeToggle) {
       document.body.classList.remove('is-searchbar-open');
+      document.body.querySelector('.content').classList.remove('blurred');
     }
   });
 

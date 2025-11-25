@@ -93,52 +93,55 @@ const SearchBar2 = () => {
       </Modal>
 
       <div className="searchbar" ref={searchbarRef}>
+        <div className='searchbar-content'>
           <SearchOutlined className="searchbar-icon" />
-        <input
-          className="search-input searchbar-input"
-          onChange={onSearchChange}
-          onKeyUp={onKeyUp}
-          onFocus={onFocusInput}
-          placeholder="Search product..."
-          readOnly={isLoading}
-          type="text"
-          value={searchInput}
-        />
-        {filter.recent.length !== 0 && (
-          <div className="searchbar-recent">
-            <div className="searchbar-recent-header">
-              <h5>Recent Search</h5>
-              <h5
-                className="searchbar-recent-clear text-subtle"
-                onClick={onClearRecent}
-                role="presentation"
-              >
-                Clear
-              </h5>
-            </div>
-            {filter.recent.map((item, index) => (
-              <div
-                className="searchbar-recent-wrapper"
-                key={`search-${item}-${index}`}
-              >
+          <input
+            className="search-input searchbar-input"
+            onChange={onSearchChange}
+            onKeyUp={onKeyUp}
+            onFocus={onFocusInput}
+            placeholder="Search product..."
+            readOnly={isLoading}
+            type="text"
+            value={searchInput}
+          />
+          {filter.recent.length !== 0 && (
+            <div className="searchbar-recent">
+              <div className="searchbar-recent-header">
+                <h5>Recent Search</h5>
                 <h5
-                  className="searchbar-recent-keyword margin-0"
-                  onClick={() => onClickRecentSearch(item)}
+                  className="searchbar-recent-clear text-subtle"
+                  onClick={onClearRecent}
                   role="presentation"
                 >
-                  {item}
+                  Clear
                 </h5>
-                <span
-                  className="searchbar-recent-button text-subtle"
-                  onClick={() => dispatch(removeSelectedRecent(item))}
-                  role="presentation"
-                >
-                  X
-                </span>
               </div>
-            ))}
-          </div>
-        )}
+              {filter.recent.map((item, index) => (
+                <div
+                  className="searchbar-recent-wrapper"
+                  key={`search-${item}-${index}`}
+                >
+                  <h5
+                    className="searchbar-recent-keyword margin-0"
+                    onClick={() => onClickRecentSearch(item)}
+                    role="presentation"
+                  >
+                    {item}
+                  </h5>
+                  <span
+                    className="searchbar-recent-button text-subtle"
+                    onClick={() => dispatch(removeSelectedRecent(item))}
+                    role="presentation"
+                  >
+                    X
+                  </span>
+                </div>
+              ))}
+              
+            </div>
+          )}
+        </div>
       </div>
     </Boundary>
   )
