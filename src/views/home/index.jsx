@@ -1,6 +1,7 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { MessageDisplay } from '@/components/common';
 import { ProductShowcaseGrid } from '@/components/product';
+import { ProductGallery } from '@/components/product'
 import { FEATURED_PRODUCTS, RECOMMENDED_PRODUCTS, SHOP } from '@/constants/routes';
 import {
   useDocumentTitle, useFeaturedProducts, useRecommendedProducts, useScrollTop
@@ -49,6 +50,21 @@ const Home = () => {
           </div>
           <div className="banner-img"><img src={bannerImg} alt="" /></div>
         </div>
+
+        <section className="section">
+          <div className="section-header">
+            <header>
+              <h2>
+                Explore the vault
+              </h2>
+              </header>    
+          </div>
+          <div>
+            <ProductGallery 
+              products={recommendedProducts}
+              skeletonCount={6}/>
+          </div>
+        </section>
         <div className="display">
           <div className="display-header">
             <h1>Featured Products</h1>
