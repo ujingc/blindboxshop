@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import { FilterOutlined, ShoppingOutlined, SearchOutlined } from '@ant-design/icons';
+import { FilterOutlined, ShoppingOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import * as ROUTE from '@/constants/routes';
 import logo from '@/images/logo-full.png';
 import React, { useEffect, useRef } from 'react';
@@ -95,7 +95,7 @@ const Navigation = () => {
                 type="button"
               >
                 <Badge count={0}>
-                  <SearchOutlined style={{ fontSize: '2.4rem' }} />
+                  <SearchOutlined style={{ fontSize: '2rem' }} />
                 </Badge>
               </button>
             )}
@@ -112,7 +112,7 @@ const Navigation = () => {
               >
 
                 <Badge count={store.basketLength}>
-                  <ShoppingOutlined style={{ fontSize: '2.4rem' }} />
+                  <ShoppingOutlined style={{ fontSize: '2rem' }} />
                 </Badge>
               </button>
             )}
@@ -124,22 +124,15 @@ const Navigation = () => {
           </li>
         ) : (
           <li className="navigation-action">
-            {pathname !== ROUTE.SIGNUP && (
-              <Link
-                className="button button-small"
-                onClick={onClickLink}
-                to={ROUTE.SIGNUP}
-              >
-                Sign Up
-              </Link>
-            )}
             {pathname !== ROUTE.SIGNIN && (
               <Link
-                className="button button-small button-muted margin-left-s"
+                className="navigation-menu-link"
                 onClick={onClickLink}
                 to={ROUTE.SIGNIN}
               >
-                Sign In
+                <Badge count={0}>
+                  <UserOutlined style={{ fontSize: '2rem', color:'#000' }} />
+                </Badge>
               </Link>
             )}
           </li>

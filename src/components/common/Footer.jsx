@@ -14,13 +14,13 @@ const Footer = () => {
   return !visibleOnlyPath.includes(pathname) ? null : (
     <footer className="footer">
       <div className="footer-col-1">
-        <strong>
+        {/* <strong>
           <span>
             Developed by
             {' '}
             <a href="https://github.com/jgudo">JULIUS GUEVARRA</a>
           </span>
-        </strong>
+        </strong> */}
       </div>
       <div className="footer-col-2">
         <img alt="Footer logo" className="footer-logo" src={logo} />
@@ -30,12 +30,12 @@ const Footer = () => {
         </h5>
       </div>
       <div className="footer-col-3">
-        <strong>
+        {/* <strong>
           <span>
             Fork this project &nbsp;
             <a href="https://github.com/jgudo/ecommerce-react">HERE</a>
           </span>
-        </strong>
+        </strong> */}
       </div>
     </footer>
   );
