@@ -15,7 +15,7 @@ const ProductGallery = (props) => {
   return (
     <div className="scroll-container">
       <ul>
-        {(products.length === 0) ? new Array(skeletonCount).fill({}).map((product, index) => (
+        {/* {(products.length === 0) ? new Array(skeletonCount).fill({}).map((product, index) => (
           <ProductGalleryItem
             // eslint-disable-next-line react/no-array-index-key
             key={`product-skeleton ${index}`}
@@ -26,7 +26,7 @@ const ProductGallery = (props) => {
             key={product.id}
             product={product}
           />
-        ))}
+        ))} */}
       </ul>
     </div>
   );
@@ -36,9 +36,9 @@ export default ProductGallery;
 
 
 ProductGallery.propTypes = {
-  products: PropType.object.isRequired,
-  isLoading: PropType.bool.isRequired,
-  requestStatus: PropType.string,
+  // products: PropType.object.isRequired,
+  // isLoading: PropType.bool.isRequired,
+  // requestStatus: PropType.string,
   // children: PropType.oneOfType([
   //   PropType.arrayOf(PropType.node),
   //   PropType.node

@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, FieldPath, getDocs, query,
   orderBy, startAfter, documentId, limit, where } from "firebase/firestore"; 
-import { getStorage } from "firebase/storage";
+import { ref, uploadBytes, getStorage, getDownloadURL, deleteObject } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import firebaseConfig from "./config";
 
@@ -240,46 +240,67 @@ class Firebase {
     }
   };
 
-  getFeaturedProducts = (itemsCount = 12) =>
-    this.db
-      .collection("products")
-      .where("isFeatured", "==", true)
-      .limit(itemsCount)
-      .get();
-
-  getRecommendedProducts = (itemsCount = 12) =>
-    this.db
-      .collection("products")
-      .where("isRecommended", "==", true)
-      .limit(itemsCount)
-      .get();
-
-  addProduct = (id, product) => {
-    const productsCollectionRef = doc(this.db, "products", id);
-    return setDoc(productsCollectionRef, product); 
-  }
-  generateKey = () => {
-    const productsCollectionRef = doc(this.db, "products", id);
-    return doc(productsCollectionRef).id; 
+  getFeaturedProducts = async (itemsCount = 12) => {
+    const productsRef = collection(this.db, "products");
+    const q = query(
+      productsRef,
+      where("isFeatured", "==", true),
+      limit(itemsCount)
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot; // This still returns a QuerySnapshot
   };
 
-  storeImage = async (id, folder, imageFile) => {
-    const snapshot = await this.storage.ref(folder).child(id).put(imageFile);
-    const downloadURL = await snapshot.ref.getDownloadURL();
+  // 1. getRecommendedProducts (v9 style)
+  getRecommendedProducts = async (itemsCount = 12) => {
+    const productsRef = collection(this.db, "products");
+    const q = query(
+      productsRef,
+      where("isRecommended", "==", true),
+      limit(itemsCount)
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot;
+  };
 
+  // 2. addProduct (already mostly v9 style!)
+  addProduct = (id, product) => {
+    const productDocRef = doc(this.db, "products", id);
+    return setDoc(productDocRef, product);
+  };
+
+  // 3. generateKey (v9 style - corrected for generating a new ID)
+  // This generates a unique ID without creating a document yet.
+  generateKey = () => {
+    const productsCollectionRef = collection(this.db, "products");
+    // Calling doc() without an ID argument generates a new unique ID
+    return doc(productsCollectionRef).id;
+  };
+
+  // 4. storeImage (v9 style)
+  storeImage = async (id, folder, imageFile) => {
+    const storageRef = ref(this.storage, `${folder}/${id}`);
+    const snapshot = await uploadBytes(storageRef, imageFile);
+    const downloadURL = await getDownloadURL(snapshot.ref);
     return downloadURL;
   };
 
-  deleteImage = (id) => this.storage.ref("products").child(id).delete();
-
-  editProduct = (id, updates) => {
-    const productsCollectionRef = doc(this.db, "products", id);
-    return updateDoc(productsCollectionRef, updates); 
+  // 5. deleteImage (v9 style)
+  deleteImage = (id) => {
+    const storageRef = ref(this.storage, `products/${id}`);
+    return deleteObject(storageRef);
   };
 
-  removeProduct = (id) => { 
-    const docRef = doc(this.db, "products", id);
-    return deleteDoc(docRef);
+  // 6. editProduct (already mostly v9 style!)
+  editProduct = (id, updates) => {
+    const productDocRef = doc(this.db, "products", id);
+    return updateDoc(productDocRef, updates);
+  };
+
+  // 7. removeProduct (already mostly v9 style!)
+  removeProduct = (id) => {
+    const productDocRef = doc(this.db, "products", id);
+    return deleteDoc(productDocRef);
   };
 }
 
