@@ -3,19 +3,18 @@ import PropType from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/redux/actions/miscActions';
-
+import ProductGalleryItem from './ProductGalleryItem'
 
 const ProductGallery = (props) => {
   const {
-    products, filteredProducts, isLoading, requestStatus
+    products, skeletonCount
   } = props;
   const [isFetching, setFetching] = useState(false);
 
-
   return (
-    <div className="scroll-container">
+    <div className="product-section-gellary">
       <ul>
-        {/* {(products.length === 0) ? new Array(skeletonCount).fill({}).map((product, index) => (
+        {(products.length === 0) ? new Array(skeletonCount).fill({}).map((product, index) => (
           <ProductGalleryItem
             // eslint-disable-next-line react/no-array-index-key
             key={`product-skeleton ${index}`}
@@ -26,7 +25,7 @@ const ProductGallery = (props) => {
             key={product.id}
             product={product}
           />
-        ))} */}
+        ))}
       </ul>
     </div>
   );
@@ -35,12 +34,11 @@ const ProductGallery = (props) => {
 export default ProductGallery;
 
 
+ProductGallery.defaultProps = {
+  skeletonCount: 4
+};
+
 ProductGallery.propTypes = {
-  // products: PropType.object.isRequired,
-  // isLoading: PropType.bool.isRequired,
-  // requestStatus: PropType.string,
-  // children: PropType.oneOfType([
-  //   PropType.arrayOf(PropType.node),
-  //   PropType.node
-  // ]).isRequired
+  products: PropType.array.isRequired,
+  skeletonCount: PropType.number
 };
