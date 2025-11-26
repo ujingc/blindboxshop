@@ -26,7 +26,7 @@ const ProductFeatured = ({ product }) => {
         <div className="product-display-details">
           <h2>{product.name || <Skeleton width={80} />}</h2>
           <p className="text-subtle text-italic">
-            {product.brand || <Skeleton width={40} />}
+            {product.type || <Skeleton width={40} />}
           </p>
         </div>
       </div>

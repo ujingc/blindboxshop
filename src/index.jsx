@@ -9,6 +9,7 @@ import '@/styles/style.scss';
 import WebFont from 'webfontloader';
 import App from './App';
 import firebase from '@/services/firebase';
+import 'font-awesome/css/font-awesome.min.css';
 
 WebFont.load({
   google: {

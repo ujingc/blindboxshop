@@ -18,7 +18,7 @@ const ProductGalleryItem = ({ product, isItemOnBasket, addToBasket }) => {
   };
 
   const imgsrc = 'https://www.popcornstore.com.hk/cdn/shop/products/IMG_5772_002__clipped_rev_1.jpg?v=1655953045'
-  const itemOnBasket = isItemOnBasket ? isItemOnBasket(product.id) : false;
+  // const itemOnBasket = isItemOnBasket ? isItemOnBasket(product.id) : false;
 
   const handleAddToBasket = () => {
     if (addToBasket && product) addToBasket({ ...product, selectedSize: '0' });
@@ -28,14 +28,33 @@ const ProductGalleryItem = ({ product, isItemOnBasket, addToBasket }) => {
     <>
       <li className='product-gallery-item'>
         <SkeletonTheme color="#e1e1e1" highlightColor="#f2f2f2">
-          <div
+          <div className="product-display" onClick={onClickItem} role="presentation">
+            <div className="product-display-img">
+              {product.image ? (
+                <ImageLoader
+                  className="product-card-img"
+                  src={product.image}
+                />
+              ) : <Skeleton width="100%" height="100%" />}
+            </div>
+            <div className="product-gallery-details">
+              <h2>{product.name || <Skeleton width={80} />}</h2>
+              <p className="text-subtle text-italic">
+                {product.type || <Skeleton width={40} />}
+              </p>
+              <p className="product-card-price">
+                {product.price ? displayMoney(product.price) : <Skeleton width={40} />}
+              </p>
+            </div>
+          </div>
+
+          {/* <div
             className={`product-card ${!product.id ? 'product-loading' : ''}`}
             style={{
               border: product && itemOnBasket ? '1px solid #a6a5a5' : '',
               boxShadow: product && itemOnBasket ? '0 10px 15px rgba(0, 0, 0, .07)' : 'none'
             }}
           >
-            {itemOnBasket && <CheckOutlined className="fa fa-check product-card-check" />}
             <div
               className="product-card-content"
               onClick={onClickItem}
@@ -61,18 +80,8 @@ const ProductGalleryItem = ({ product, isItemOnBasket, addToBasket }) => {
                   {product.price ? displayMoney(product.price) : <Skeleton width={40} />}
                 </h4>
               </div>
-            </div>
-            {product.id && (
-              <button
-                className={`product-card-button button-small button button-block ${itemOnBasket ? 'button-border button-border-gray' : ''}`}
-                onClick={handleAddToBasket}
-                type="button"
-              >
-                {itemOnBasket ? 'Remove from basket' : 'Add to basket'}
-              </button>
-            )}
-
-          </div>
+            </div> */}
+          {/* </div> */}
         </SkeletonTheme>
       </li>
     </>
