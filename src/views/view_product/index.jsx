@@ -75,9 +75,9 @@ const ViewProduct = () => {
             </h3>
           </Link>
           <div className="product-modal">
-            {product.imageCollection.length !== 0 && (
+            {product?.imageCollection?.length !== 0 && (
               <div className="product-modal-image-collection">
-                {product.imageCollection.map((image) => (
+                {product?.imageCollection?.map((image) => (
                   <div
                     className="product-modal-image-collection-wrapper"
                     key={image.id}
@@ -116,12 +116,12 @@ const ViewProduct = () => {
                 <Select
                   placeholder="--Select Size--"
                   onChange={onSelectedSizeChange}
-                  options={product.sizes.sort((a, b) => (a < b ? -1 : 1)).map((size) => ({ label: `${size} mm`, value: size }))}
+                  options={product?.sizes?.sort((a, b) => (a < b ? -1 : 1))?.map((size) => ({ label: `${size} mm`, value: size }))}
                   styles={{ menu: (provided) => ({ ...provided, zIndex: 10 }) }}
                 />
               </div>
               <br />
-              {product.availableColors.length >= 1 && (
+              {product?.availableColors?.length >= 1 && (
                 <div>
                   <span className="text-subtle">Choose Color</span>
                   <br />
@@ -133,7 +133,7 @@ const ViewProduct = () => {
                 </div>
               )}
               <h1>{displayMoney(product.price)}</h1>
-              <div className="product-modal-action">
+              {/* <div className="product-modal-action">
                 <button
                   className={`button button-small ${isItemOnBasket(product.id) ? 'button-border button-border-gray' : ''}`}
                   onClick={handleAddToBasket}
@@ -141,7 +141,7 @@ const ViewProduct = () => {
                 >
                   {isItemOnBasket(product.id) ? 'Remove From Basket' : 'Add To Basket'}
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div style={{ marginTop: '10rem' }}>
@@ -158,6 +158,46 @@ const ViewProduct = () => {
             ) : (
               <ProductShowcaseGrid products={recommendedProducts} skeletonCount={3} />
             )}
+          </div>
+
+          <div className='product-modal-sticky-footer'>
+            <div className='product-modal-play-tricks'>
+              <div>    pick a box   </div>
+              <div>    shake for hint   </div>
+              <div>    unbox   </div>
+            </div>
+
+          <div className='product-modal-buy-box'>
+            <div className='pruchase-info'>
+              <div className='price-info'>
+                {displayMoney(product.price)}
+              </div>
+              <div className='product-modal-action'>
+                <button
+                  className={`button button-small ${isItemOnBasket(product.id) ? 'button-border button-border-gray' : ''}`}
+                  onClick={handleAddToBasket}
+                  type="button"
+                >
+                  {isItemOnBasket(product.id) ? 'Remove From Basket' : 'Add To Basket'}
+                </button>
+                {/* <hr></hr> */}
+              </div>
+            </div>
+            <div className='fullfillment'>
+              <div className='delivery-icon'>
+                <i className='fa-thin fa-truck' style={{ fontSize: '2rem' }}/>
+              </div>
+              <div className='stock-status'>
+                In Stock
+              </div>
+              <div>
+                FREE delivery Saturday, December 6 to Hong Kong on eligible orders over $49. 
+              </div>
+              <div>
+                Arrives by Sun, Nov 30
+              </div>
+            </div>
+          </div>
           </div>
         </div>
       )}
