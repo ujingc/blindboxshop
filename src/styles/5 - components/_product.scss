@@ -311,8 +311,6 @@
   }
 }
 
-
-
 .product-modal-action {
   display: flex;
   margin-top: $m-size;
@@ -366,9 +364,30 @@
     box-sizing: border-box;
     margin: 0;
     min-width: 0;
+
+    span {
+      color: #d2001e;
+      font-size: 20px;
+      font-weight: 500;
+      line-height:1.25vw;
+    }
   }
   .fullfillment {
     max-width: 50%;
+
+    .fullfill-text {
+      color: #d2001e;
+      background-color: #fff1f3;
+      display: inline-block;
+      font-size: 8px;
+      padding: 4px;
+    }
+
+    .stock-status-text {
+      color: #0b7b3c;
+      font-size: 18px;
+      line-height: 24px;
+    }
   }
 }
 

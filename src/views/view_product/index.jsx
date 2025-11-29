@@ -113,15 +113,15 @@ const ViewProduct = () => {
                 <span className="text-subtle">Lens Width and Frame Size</span>
                 <br />
                 <br />
-                <Select
+                {/* <Select
                   placeholder="--Select Size--"
                   onChange={onSelectedSizeChange}
                   options={product?.sizes?.sort((a, b) => (a < b ? -1 : 1))?.map((size) => ({ label: `${size} mm`, value: size }))}
                   styles={{ menu: (provided) => ({ ...provided, zIndex: 10 }) }}
-                />
+                /> */}
               </div>
               <br />
-              {product?.availableColors?.length >= 1 && (
+              {/* {product?.availableColors?.length >= 1 && (
                 <div>
                   <span className="text-subtle">Choose Color</span>
                   <br />
@@ -131,17 +131,7 @@ const ViewProduct = () => {
                     onSelectedColorChange={onSelectedColorChange}
                   />
                 </div>
-              )}
-              <h1>{displayMoney(product.price)}</h1>
-              {/* <div className="product-modal-action">
-                <button
-                  className={`button button-small ${isItemOnBasket(product.id) ? 'button-border button-border-gray' : ''}`}
-                  onClick={handleAddToBasket}
-                  type="button"
-                >
-                  {isItemOnBasket(product.id) ? 'Remove From Basket' : 'Add To Basket'}
-                </button>
-              </div> */}
+              )} */}
             </div>
           </div>
           <div style={{ marginTop: '10rem' }}>
@@ -161,16 +151,18 @@ const ViewProduct = () => {
           </div>
 
           <div className='product-modal-sticky-footer'>
-            <div className='product-modal-play-tricks'>
-              <div>    pick a box   </div>
-              <div>    shake for hint   </div>
-              <div>    unbox   </div>
-            </div>
-
+          <div className='product-modal-play-tricks'>
+            <div>    Claim your mistery   </div>
+            <i className='Outline in the mist'></i>
+            <div>    Shake the future   </div>
+            <i className='A crystal ball of fate containing stardust'></i>
+            <div>    Reveal Your treasure   </div>
+            <i className='A treasure chest that opens with a radiant glow'></i>
+          </div>
           <div className='product-modal-buy-box'>
             <div className='pruchase-info'>
               <div className='price-info'>
-                {displayMoney(product.price)}
+                <span>{displayMoney(product.price)}</span>
               </div>
               <div className='product-modal-action'>
                 <button
@@ -185,16 +177,13 @@ const ViewProduct = () => {
             </div>
             <div className='fullfillment'>
               <div className='delivery-icon'>
-                <i className='fa-thin fa-truck' style={{ fontSize: '2rem' }}/>
-              </div>
-              <div className='stock-status'>
-                In Stock
+                <i className='fa fa-truck' style={{ fontSize: '2rem' }}/>
               </div>
               <div>
-                FREE delivery Saturday, December 6 to Hong Kong on eligible orders over $49. 
+                <span className='stock-status-text'>In Stock</span>
               </div>
               <div>
-                Arrives by Sun, Nov 30
+                <span className='fullfill-text'>FREE delivery Saturday, December 6 to Hong Kong on eligible orders over $49. </span>
               </div>
             </div>
           </div>
