@@ -1,8 +1,8 @@
-import { FacebookOutlined, GithubFilled, GoogleOutlined } from '@ant-design/icons';
+import { FacebookOutlined, GithubFilled, GoogleOutlined, AppleFilled } from '@ant-design/icons';
 import PropType from 'prop-types';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { signInWithFacebook, signInWithGithub, signInWithGoogle } from '@/redux/actions/authActions';
+import { signInWithApple, signInWithGithub, signInWithGoogle } from '@/redux/actions/authActions';
 
 const SocialLogin = ({ isLoading }) => {
   const dispatch = useDispatch();
@@ -11,8 +11,8 @@ const SocialLogin = ({ isLoading }) => {
     dispatch(signInWithGoogle());
   };
 
-  const onSignInWithFacebook = () => {
-    dispatch(signInWithFacebook());
+  const onSignInWithApple = () => {
+    dispatch(signInWithApple());
   };
 
   const onSignInWithGithub = () => {
@@ -22,14 +22,13 @@ const SocialLogin = ({ isLoading }) => {
   return (
     <div className="auth-provider">
       <button
-        className="button auth-provider-button provider-facebook"
+        className="button auth-provider-button provider-apple"
         disabled={isLoading}
-        onClick={onSignInWithFacebook}
+        onClick={onSignInWithApple}
         type="button"
       >
-        {/* <i className="fab fa-facebook" /> */}
-        <FacebookOutlined />
-        Continue with Facebook
+        <AppleFilled/>
+        Continue with Apple
       </button>
       <button
         className="button auth-provider-button provider-google"
@@ -40,7 +39,7 @@ const SocialLogin = ({ isLoading }) => {
         <GoogleOutlined />
         Continue with Google
       </button>
-      <button
+      {/* <button
         className="button auth-provider-button provider-github"
         disabled={isLoading}
         onClick={onSignInWithGithub}
@@ -48,7 +47,7 @@ const SocialLogin = ({ isLoading }) => {
       >
         <GithubFilled />
         Continue with GitHub
-      </button>
+      </button> */}
     </div>
   );
 };

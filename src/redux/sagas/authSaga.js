@@ -3,7 +3,7 @@ import {
   ON_AUTHSTATE_SUCCESS, RESET_PASSWORD,
   SET_AUTH_PERSISTENCE,
   SIGNIN, SIGNIN_WITH_FACEBOOK,
-  SIGNIN_WITH_GITHUB, SIGNIN_WITH_GOOGLE,
+  SIGNIN_WITH_GITHUB, SIGNIN_WITH_GOOGLE, SIGNIN_WITH_APPLE,
   SIGNOUT, SIGNUP
 } from '@/constants/constants';
 import { SIGNIN as ROUTE_SIGNIN } from '@/constants/routes';
@@ -68,10 +68,18 @@ function* authSaga({ type, payload }) {
         yield handleError(e);
       }
       break;
-    case SIGNIN_WITH_FACEBOOK:
+    // case SIGNIN_WITH_FACEBOOK:
+    //   try {
+    //     yield initRequest();
+    //     yield call(firebase.signInWithFacebook);
+    //   } catch (e) {
+    //     yield handleError(e);
+    //   }
+    //   break;
+    case SIGNIN_WITH_APPLE:
       try {
         yield initRequest();
-        yield call(firebase.signInWithFacebook);
+        yield call(firebase.signInWithApple);
       } catch (e) {
         yield handleError(e);
       }

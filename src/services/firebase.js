@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, FieldPath, getDocs, query,
   orderBy, startAfter, documentId, limit, where } from "firebase/firestore"; 
 import { ref, uploadBytes, getStorage, getDownloadURL, deleteObject } from "firebase/storage";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, OAuthProvider, signInWithPopup } from "firebase/auth";
 import firebaseConfig from "./config";
 
 class Firebase {
@@ -22,8 +22,67 @@ class Firebase {
   signIn = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
-  signInWithGoogle = () =>
-    this.auth.signInWithPopup(new app.auth.GoogleAuthProvider());
+  signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      return signInWithPopup(this.auth, provider);
+      // Handle successful sign-in
+    } catch (error) {
+      console.error("Error signing in with Google", error);
+      // Handle errors here
+    }
+  };
+
+  signInWithApple = async () => {
+    // 1. Create an instance of the OAuthProvider for Apple
+    const provider = new OAuthProvider('apple.com');
+
+    // 2. (Optional) Request specific scopes if needed
+    // For example, to request full name and email.
+    // Note: Apple only shares these the first time a user signs in.
+    provider.addScope('email');
+    provider.addScope('name');
+
+    // 3. (Optional) Configure language (e.g., 'en', 'es', 'fr')
+    provider.setCustomParameters({
+      'locale': 'en'
+    });
+
+    try {
+      // 4. Use signInWithPopup with the configured Apple provider
+      const result = await signInWithPopup(auth, provider);
+      // The signed-in user info.
+      const user = result.user;
+
+      // You can also get the Apple-specific credential information
+      const credential = OAuthProvider.credentialFromResult(result);
+      const accessToken = credential.accessToken;
+      const idToken = credential.idToken;
+
+      // Handle successful sign-in
+      console.log("Successfully signed in with Apple:", user);
+      console.log("Apple ID Token:", idToken);
+
+    } catch (error) {
+      console.error("Error signing in with Apple:", error);
+      // Handle errors here.
+      // Check for specific error codes, e.g., if the popup was closed.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData?.email;
+      // The AuthCredential type that was used.
+      const credential = OAuthProvider.credentialFromError(error);
+
+      // If an account already exists with the same email address,
+      // you can link the accounts or handle it as appropriate.
+      if (errorCode === 'auth/account-exists-with-different-credential') {
+        console.warn("Account exists with different credential:", email);
+        // You might prompt the user to sign in with their existing method
+        // or try to link accounts.
+      }
+    }
+  };
 
   signInWithFacebook = () =>
     this.auth.signInWithPopup(new app.auth.FacebookAuthProvider());
@@ -41,6 +100,7 @@ class Firebase {
   }
   
   getUser = (id) => { 
+    const user = this.auth.currentUser;
     const userDocRef = doc(this.db, "users", id);
     return getDoc(userDocRef, user);  
   }
@@ -104,7 +164,7 @@ class Firebase {
     });
 
   saveBasketItems = (items, userId) => {
-    const userDocRef = doc(this.db, "users", id);
+    const userDocRef = doc(this.db, "users", userId);
     return updateDoc(userDocRef, { basket: items });  
   }
   setAuthPersistence = () =>

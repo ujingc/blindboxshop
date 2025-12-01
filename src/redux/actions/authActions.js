@@ -16,6 +16,10 @@ export const signInWithFacebook = () => ({
   type: type.SIGNIN_WITH_FACEBOOK
 });
 
+export const signInWithApple = () => ({
+  type: type.SIGNIN_WITH_APPLE
+});
+
 export const signInWithGithub = () => ({
   type: type.SIGNIN_WITH_GITHUB
 });
