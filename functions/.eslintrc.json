@@ -1,7 +1,13 @@
 {
+  "parser": "@babel/eslint-parser", // Use the modern parser
   "parserOptions": {
     // Required for certain syntax usages
-    "ecmaVersion": 2017
+    "requireConfigFile": false, // If you don't have a babel.config.js
+    "ecmaVersion": 2020, // Or whatever your target JS version is
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true // If your functions are generating JSX or similar
+    }
   },
   "plugins": [
     "promise"

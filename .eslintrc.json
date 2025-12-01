@@ -7,8 +7,9 @@
         "plugin:react/recommended",
         "airbnb"
     ],
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser", // Use the modern parser
     "parserOptions": {
+        "requireConfigFile": false, // If you don't have a babel.config.js
         "ecmaFeatures": {
             "jsx": true
         },

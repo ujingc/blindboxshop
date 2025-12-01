@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "blindboxshop",
+    "default": "blindboxshop-25dae",
     "staging": "blindboxshop-25dae"
   },
   "targets": {},
