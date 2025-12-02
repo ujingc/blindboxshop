@@ -17,14 +17,25 @@ import ShippingForm from './ShippingForm';
 import ShippingTotal from './ShippingTotal';
 
 const FormSchema = Yup.object().shape({
-  fullname: Yup.string()
-    .required('Full name is required.')
-    .min(2, 'Full name must be at least 2 characters long.')
-    .max(60, 'Full name must only be less than 60 characters.'),
-  email: Yup.string()
-    .email('Email is not valid.')
-    .required('Email is required.'),
-  address: Yup.string()
+  address: Yup.object()
+    .shape({
+        firstname: Yup.string()
+          .required('Full name is required.'),
+        lastname: Yup.string()
+          .required('Full name is required.'),
+        addressline1: Yup.string()
+          .required('Shipping address line is required.'),
+        addressline2: Yup.string()
+          .optional(),
+        city: Yup.string()
+          .required('City is required.'),
+        country: Yup.string()
+          .required('Country is required.'),
+        state: Yup.string()
+          .required('State is required.'),
+        zipcode: Yup.number()
+          .required('Zip code is required.'),
+    })
     .required('Shipping address is required.'),
   mobile: Yup.object()
     .shape({
@@ -45,9 +56,17 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
   const history = useHistory();
 
   const initFormikValues = {
-    fullname: shipping.fullname || profile.fullname || '',
-    email: shipping.email || profile.email || '',
-    address: shipping.address || profile.address || '',
+    address: { 
+      firstname: shipping.firstname || '',
+      lastname: shipping.lastname || '',
+      addressline1: shipping.address.addressline1 || '',
+      addressline2: shipping.address.addressline2 || '',
+      city: shipping.address.city || '',
+      country: shipping.address.country,
+      state: shipping.address.state || '',
+      zipcode: shipping.address.zipcode,
+      country: shipping.address.country || 'United States' 
+    },
     mobile: shipping.mobile || profile.mobile || {},
     isInternational: shipping.isInternational || false,
     isDone: shipping.isDone || false
@@ -55,9 +74,15 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
 
   const onSubmitForm = (form) => {
     dispatch(setShippingDetails({
-      fullname: form.fullname,
-      email: form.email,
-      address: form.address,
+      address: {
+        firstname: form.firstname,
+        lastname: form.lastname,
+        addressline1: form.addressline1,
+        addressline2: form.addressline2,
+        country: form.country,
+        zipcode: form.zipcode,
+        city: form.city
+      },
       mobile: form.mobile,
       isInternational: form.isInternational,
       isDone: true
@@ -74,7 +99,7 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
           <Formik
             initialValues={initFormikValues}
             validateOnChange
-            validationSchema={FormSchema}
+            // validationSchema={FormSchema}
             onSubmit={onSubmitForm}
           >
             {() => (
@@ -118,13 +143,13 @@ ShippingDetails.propTypes = {
   profile: PropType.shape({
     fullname: PropType.string,
     email: PropType.string,
-    address: PropType.string,
+    address: PropType.object,
     mobile: PropType.object
   }).isRequired,
   shipping: PropType.shape({
-    fullname: PropType.string,
-    email: PropType.string,
-    address: PropType.string,
+    firstname: PropType.string,
+    lastname: PropType.string,
+    address: PropType.object,
     mobile: PropType.object,
     isInternational: PropType.bool,
     isDone: PropType.bool

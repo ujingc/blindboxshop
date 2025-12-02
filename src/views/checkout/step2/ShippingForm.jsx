@@ -11,20 +11,20 @@ const ShippingForm = () => {
         <div className="checkout-fieldset">
           <div className="d-block checkout-field">
             <Field
-              name="fullname"
+              name="firstname"
               type="text"
-              label="* Full Name"
-              placeholder="Enter your full name"
+              label="* First Name"
+              placeholder="Enter your first name"
               component={CustomInput}
               style={{ textTransform: 'capitalize' }}
             />
           </div>
           <div className="d-block checkout-field">
             <Field
-              name="email"
-              type="email"
-              label="* Email Address"
-              placeholder="Enter your email address"
+              name="lastname"
+              type="text"
+              label="* Last Name"
+              placeholder="Enter your last name"
               component={CustomInput}
             />
           </div>
@@ -32,10 +32,54 @@ const ShippingForm = () => {
         <div className="checkout-fieldset">
           <div className="d-block checkout-field">
             <Field
-              name="address"
+              name="addressline1"
               type="text"
-              label="* Shipping Address"
-              placeholder="Enter full shipping address"
+              label="* Shipping Address Line 1"
+              placeholder="Street Address"
+              component={CustomInput}
+            />
+          </div>
+        </div>
+        <div className="checkout-fieldset">
+          <div className="d-block checkout-field">
+            <Field
+              name="addressline2"
+              type="text"
+              label="* Shipping Address Line 2"
+              placeholder="Apartment, suite, building (optional)"
+              component={CustomInput}
+            />
+          </div>
+        </div>
+        <div className="checkout-fieldset">
+          <div className="d-block checkout-field">
+            <Field
+              name="zipcode"
+              type="text"
+              label="* ZIP Code"
+              placeholder="Zip Code"
+              component={CustomInput}
+            />
+          </div>
+          <div className="d-block checkout-field">
+            <Field
+              disabled="United States"
+              value="United States"
+              name="country"
+              type="text"
+              label="* Country"
+              placeholder="Country"
+              component={CustomInput}
+            />
+          </div>
+        </div>
+        <div className="checkout-fieldset">
+          <div className="d-block checkout-field">
+            <Field
+              name="city"
+              type="text"
+              label="* City"
+              placeholder="City"
               component={CustomInput}
             />
           </div>

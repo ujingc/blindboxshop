@@ -4,6 +4,9 @@ import { calculateTotal } from '@/helpers/utils';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
 
 const withCheckout = (Component) => withRouter((props) => {
   const state = useSelector((store) => ({
@@ -11,11 +14,13 @@ const withCheckout = (Component) => withRouter((props) => {
     basket: store.basket,
     shipping: store.checkout.shipping,
     payment: store.checkout.payment,
+    error: store.checkout.error,
     profile: store.profile
   }));
 
   const shippingFee = state.shipping.isInternational ? 50 : 0;
   const subtotal = calculateTotal(state.basket.map((product) => product.price * product.quantity));
+  const stripePromise = loadStripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY');
 
   if (!state.isAuth) {
     return <Redirect to={SIGNIN} />;
@@ -23,15 +28,18 @@ const withCheckout = (Component) => withRouter((props) => {
     return <Redirect to="/" />;
   } if (state.isAuth && state.basket.length !== 0) {
     return (
-      <Component
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...props}
-        basket={state.basket}
-        payment={state.payment}
-        profile={state.profile}
-        shipping={state.shipping}
-        subtotal={Number(subtotal + shippingFee)}
-      />
+      <Elements stripe={stripePromise}>
+        <Component
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...props}
+          basket={state.basket}
+          payment={state.payment}
+          profile={state.profile}
+          shipping={state.shipping}
+          error={state.error}
+          subtotal={Number(subtotal + shippingFee)}
+        />
+      </Elements>
     );
   }
   return null;
