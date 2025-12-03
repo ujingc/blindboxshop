@@ -50,7 +50,7 @@ class Firebase {
 
     try {
       // 4. Use signInWithPopup with the configured Apple provider
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(this.auth, provider);
       // The signed-in user info.
       const user = result.user;
 
