@@ -208,6 +208,32 @@
   background: #f1f1f1;
 }
 
+.checkout-label{
+  background: none;
+  padding: 1rem 1.2rem;
+  color: #696868;
+  border: none;
+}
+
+.checkout-label:hover{
+  background: none;
+  padding: 1rem 1.2rem;
+  color: #696868;
+  border: none;
+}
+
+.InputContainer .InputElement{
+  font-size: 14px;
+  color: #424770;
+  padding: 0 10px;
+}
+
+::placeholder {
+  color: '#aab7c4'
+}
+
+
+
 .checkout-shipping-action {
   display: flex;
   align-items: center;

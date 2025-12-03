@@ -29,6 +29,7 @@ const CustomMobileInput = (props) => {
         <label className="label-input" htmlFor={field.name}>{label}</label>
       )}
       <PhoneInput
+        id="mobilephone"
         name={field.name}
         country="ph"
         inputClass="input-form d-block"
@@ -46,6 +47,7 @@ const CustomMobileInput = (props) => {
 
 CustomMobileInput.defaultProps = {
   label: 'Mobile Number',
+  htmlFor: 'mobilephone',
   placeholder: '09254461351'
 };
 

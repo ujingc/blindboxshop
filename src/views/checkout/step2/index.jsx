@@ -17,26 +17,20 @@ import ShippingForm from './ShippingForm';
 import ShippingTotal from './ShippingTotal';
 
 const FormSchema = Yup.object().shape({
-  address: Yup.object()
-    .shape({
-        firstname: Yup.string()
-          .required('Full name is required.'),
-        lastname: Yup.string()
-          .required('Full name is required.'),
-        addressline1: Yup.string()
-          .required('Shipping address line is required.'),
-        addressline2: Yup.string()
-          .optional(),
-        city: Yup.string()
-          .required('City is required.'),
-        country: Yup.string()
-          .required('Country is required.'),
-        state: Yup.string()
-          .required('State is required.'),
-        zipcode: Yup.number()
-          .required('Zip code is required.'),
-    })
-    .required('Shipping address is required.'),
+  firstname: Yup.string()
+    .required('First name is required.'),
+  lastname: Yup.string()
+    .required('Last name is required.'),
+  addressline1: Yup.string()
+    .required('Shipping address line is required.'),
+  addressline2: Yup.string()
+    .optional(),
+  city: Yup.string()
+    .required('City is required.'),
+  country: Yup.string()
+    .required('Country is required.'),
+  zipcode: Yup.number()
+    .required('Zip code is required.'),
   mobile: Yup.object()
     .shape({
       country: Yup.string(),
@@ -56,17 +50,13 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
   const history = useHistory();
 
   const initFormikValues = {
-    address: { 
-      firstname: shipping.firstname || '',
-      lastname: shipping.lastname || '',
-      addressline1: shipping.address.addressline1 || '',
-      addressline2: shipping.address.addressline2 || '',
-      city: shipping.address.city || '',
-      country: shipping.address.country,
-      state: shipping.address.state || '',
-      zipcode: shipping.address.zipcode,
-      country: shipping.address.country || 'United States' 
-    },
+    firstname: shipping.firstname || '',
+    lastname: shipping.lastname || '',
+    addressline1: shipping.address.addressline1 || '',
+    addressline2: shipping.address.addressline2 || '',
+    city: shipping.address.city || '',
+    zipcode: shipping.address.zipcode,
+    country: shipping.address.country || 'United States',
     mobile: shipping.mobile || profile.mobile || {},
     isInternational: shipping.isInternational || false,
     isDone: shipping.isDone || false
@@ -99,38 +89,40 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
           <Formik
             initialValues={initFormikValues}
             validateOnChange
-            // validationSchema={FormSchema}
+            validationSchema={FormSchema}
             onSubmit={onSubmitForm}
           >
-            {() => (
-              <Form>
-                <ShippingForm />
-                <br />
-                {/*  ---- TOTAL --------- */}
-                <ShippingTotal subtotal={subtotal} />
-                <br />
-                {/*  ----- NEXT/PREV BUTTONS --------- */}
-                <div className="checkout-shipping-action">
-                  <button
-                    className="button button-muted"
-                    onClick={() => history.push(CHECKOUT_STEP_1)}
-                    type="button"
-                  >
-                    <ArrowLeftOutlined />
-                    &nbsp;
-                    Go Back
-                  </button>
-                  <button
-                    className="button button-icon"
-                    type="submit"
-                  >
-                    Next Step
-                    &nbsp;
-                    <ArrowRightOutlined />
-                  </button>
-                </div>
-              </Form>
+            {({values, errors, touched}) => {
+              return (
+                <Form>
+                  <ShippingForm />
+                  <br />
+                  {/*  ---- TOTAL --------- */}
+                  <ShippingTotal subtotal={subtotal} />
+                  <br />
+                  {/*  ----- NEXT/PREV BUTTONS --------- */}
+                  <div className="checkout-shipping-action">
+                    <button
+                      className="button button-muted"
+                      onClick={() => history.push(CHECKOUT_STEP_1)}
+                      type="button"
+                    >
+                      <ArrowLeftOutlined />
+                      &nbsp;
+                      Go Back
+                    </button>
+                    <button
+                      className="button button-icon"
+                      type="submit"
+                    >
+                      Next Step
+                      &nbsp;
+                      <ArrowRightOutlined />
+                    </button>
+                  </div>
+                </Form>
             )}
+          }
           </Formik>
         </div>
       </div>
@@ -143,12 +135,10 @@ ShippingDetails.propTypes = {
   profile: PropType.shape({
     fullname: PropType.string,
     email: PropType.string,
-    address: PropType.object,
+    address: PropType.string,
     mobile: PropType.object
   }).isRequired,
   shipping: PropType.shape({
-    firstname: PropType.string,
-    lastname: PropType.string,
     address: PropType.object,
     mobile: PropType.object,
     isInternational: PropType.bool,
