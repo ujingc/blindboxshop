@@ -8,16 +8,14 @@ import { Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
 import { StepTracker } from '../components';
 import withCheckout from '../hoc/withCheckout';
-import CreditPayment from './CreditPayment';
+import CreditPayment2 from './CreditPayment2';
 import PayPalPayment from './PayPalPayment';
 import Total from './Total';
 import { setSubmitting, setErrors, resetCheckout } from '@/redux/actions/checkoutActions';
-import { useDispatch } from 'react-redux';
-
-
+import { useDispatch, useSelector } from 'react-redux';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { getApp } from 'firebase/app';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useStripe, useElements } from '@stripe/react-stripe-js';
 
 const FormSchema = Yup.object().shape({
   name: Yup.string()
@@ -36,22 +34,21 @@ const FormSchema = Yup.object().shape({
   type: Yup.string().required('Please select paymend mode')
 });
 
-const Payment = ({ shipping, payment, subtotal, error }) => {
+const Payment = ({ payment, subtotal, error }) => {
   useDocumentTitle('Check Out Final Step | Salinaka');
   useScrollTop();
+  const { shipping } = useSelector((state) => ({
+    shipping: state.checkout.shipping,
+  }));
 
   const initFormikValues = {
     name: payment.name || '',
     cardnumber: payment.cardnumber || '',
     expiry: payment.expiry || '',
     ccv: payment.ccv || '',
-    type: payment.type || 'paypal',
-    paymentMethod: payment.method || 'credit' 
+    type: payment.type,
+    paymentMethod: payment.method
   };
-
-  // const onConfirm = () => {
-  //   displayActionMessage('Feature not ready yet :)', 'info');
-  // };
 
   const app = getApp(); // Get your initialized Firebase app instance
   const functions = getFunctions(app); // Get your Firebase Functions instance
@@ -63,7 +60,6 @@ const Payment = ({ shipping, payment, subtotal, error }) => {
   const dispatch = useDispatch();
 
   const onConfirm = async (values, actions) => {
-    console.log('values', values)
     dispatch(setSubmitting(true)); // Disable the submit button
     setErrors(null); // Clear any previous card errors
 
@@ -74,9 +70,13 @@ const Payment = ({ shipping, payment, subtotal, error }) => {
         if (!stripe || !elements) {
           throw new Error("Stripe.js has not loaded. Please try again.");
         }
-
         // Get a reference to the CardElement
         const cardElement = elements.getElement(CardElement);
+        console.log("CardElement instance:", cardElement); // ADD THIS
+
+        if (!cardElement) { // Explicitly check if it's null before proceeding
+          throw new Error("Credit card input is not ready. Please try again.");
+        }
 
         // 3. Create a PaymentMethod ID using Stripe.js
         const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -86,23 +86,20 @@ const Payment = ({ shipping, payment, subtotal, error }) => {
             name: values.cardName,
             email: 'your-user-email@example.com', // Dynamically get user's email if available
             address: { // Optional: if you collect billing address separately
-                line1: values.shippingAddress.line1,
-                line2: values.shippingAddress.line2,
-                city: values.shippingAddress.city,
-                state: values.shippingAddress.country,
-                postal_code: values.shippingAddress.zipcode,
-                country: values.shippingAddress.country,
+                line1: shipping.address.addressline1,
+                line2: shipping.address.addressline2,
+                city: shipping.address.city,
+                country: shipping.address.country,
+                postal_code: shipping.address.zipcode,
             }
           },
         });
-        console.log('paymentMethod: ', paymentMethod)
 
         if (error) {
           setCardError(error.message); // Display error to the user
           throw new Error(error.message); // Propagate error for general catch block
         }
         if (!paymentMethod) {
-            console.log('paymentMethod: ', paymentMethod)
             throw new Error("Failed to create payment method. Please check card details.");
         }
 
@@ -153,6 +150,7 @@ const Payment = ({ shipping, payment, subtotal, error }) => {
     <div className="checkout">
       <StepTracker current={3} />
       <Formik
+        disabled={true}
         initialValues={initFormikValues}
         validateOnChange
         validationSchema={FormSchema}
@@ -165,7 +163,7 @@ const Payment = ({ shipping, payment, subtotal, error }) => {
       >
         {() => (
           <Form className="checkout-step-3">
-            <CreditPayment />
+            <CreditPayment2 />
             <PayPalPayment />
             <Total
               isInternational={shipping.isInternational}
