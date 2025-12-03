@@ -5,8 +5,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-
+import stripePromise from '@/services/stripeConfig'
 
 const withCheckout = (Component) => withRouter((props) => {
   const state = useSelector((store) => ({
@@ -20,8 +19,6 @@ const withCheckout = (Component) => withRouter((props) => {
 
   const shippingFee = state.shipping.isInternational ? 50 : 0;
   const subtotal = calculateTotal(state.basket.map((product) => product.price * product.quantity));
-  const stripePromise = loadStripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY');
-
   if (!state.isAuth) {
     return <Redirect to={SIGNIN} />;
   } if (state.basket.length === 0) {

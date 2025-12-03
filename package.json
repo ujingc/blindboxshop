@@ -56,6 +56,8 @@
     "@ant-design/icons": "^4.6.2",
     "@babel/core": "^7.28.5",
     "@babel/eslint-parser": "^7.28.5",
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.5.3",
     "firebase": "^9.1.0",
     "font-awesome": "^4.7.0",
     "formik": "^2.2.6",

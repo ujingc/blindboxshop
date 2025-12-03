@@ -3,6 +3,7 @@
 import { CustomInput } from '@/components/formik';
 import { Field, useFormikContext } from 'formik';
 import React, { useEffect, useRef } from 'react';
+import { CardElement } from '@stripe/react-stripe-js';
 
 const CreditPayment = () => {
   const { values, setValues } = useFormikContext();
@@ -33,7 +34,7 @@ const CreditPayment = () => {
 
   const onCreditModeChange = (e) => {
     if (e.target.checked) {
-      setValues({ ...values, type: 'credit' });
+      setValues({ ...values, type: 'credit', paymentMethod: 'credit' });
       toggleCollapse();
     }
   };

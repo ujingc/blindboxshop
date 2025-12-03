@@ -7,7 +7,7 @@ const defaultState = {
   shipping: {},
   payment: {
     paymentMethod: '',
-    type: 'paypal',
+    type: 'credit',
     name: '',
     cardnumber: '',
     expiry: '',
