@@ -189,7 +189,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 97px;
+  height: auto;
   overflow: hidden;
   transition: all .5s ease;
   opacity: .6;
@@ -198,6 +198,50 @@
     opacity: 1;
   }
 }
+
+.stripe-input-container{
+  position: relative; /* Needed for absolute positioning of icon */
+  align-items: center; /* Vertically align the icon with the input */
+  padding: 10px 1.6rem !important;
+  border: 1px solid #c5c5c5;
+}
+
+.stripe-input-container.is-invalid {
+  border: 1px solid #df1b41;
+}
+
+.stripe-input-container .detected-card-brand-icon {
+  position: absolute; /* Position relative to .stripe-input-container */
+  right: 5px; /* Adjust as needed */
+  top: 3px;
+  height: 30px; /* Adjust size of your icon */
+  width: auto;
+  pointer-events: none; /* Make icon unclickable so it doesn't interfere with input */
+  z-index: 1; /* Ensure it's above the iframe, if necessary */
+}
+
+.card-brand-icons-display {
+  display: flex; /* Make this a flex container for multiple icons */
+  align-items: center;
+  position: absolute; /* Position relative to .stripe-input-container */
+  right: 2px; /* Adjust as needed */
+  top: 3px;
+  width: auto;
+  pointer-events: none;
+  z-index: 99;
+  flex-shrink: 0; /* Prevent icons from shrinking */
+  line-height: 1; /* Helps with vertical alignment */
+}
+
+.card-brand-icons-display .card-brand-icon {
+  height: 30px; /* Default size for a single detected icon */
+  width: auto;
+  pointer-events: none; /* Make icon unclickable */
+  transition: opacity 0.3s ease; /* Smooth transition for icon changes */
+  margin: 0 2px;
+}
+
+
 
 .checkout-checkbox-field {
   display: flex;
@@ -210,26 +254,27 @@
 
 .checkout-label{
   background: none;
-  padding: 1rem 1.2rem;
+  padding: 1rem 0.2rem;
   color: #696868;
   border: none;
 }
 
 .checkout-label:hover{
   background: none;
-  padding: 1rem 1.2rem;
+  padding: 1rem 0.2rem;
   color: #696868;
   border: none;
 }
 
-.InputContainer .InputElement{
-  font-size: 14px;
-  color: #424770;
-  padding: 0 10px;
-}
-
 ::placeholder {
   color: '#aab7c4'
+}
+
+.card-error {
+  font-size: 0.93rem;
+  font-weight: bold;
+  padding: 1rem 0;  
+  color: #df1b41;
 }
 
 
@@ -269,7 +314,6 @@
   height: 32px;
   background: url('/static/creditcards.png');
   background-size: 300px 200px;
-  filter: grayscale(1);
   border-radius: 2px;
 }
 
@@ -277,22 +321,8 @@
   background-position: 103px 115px;
 }
 
-.payment-img-visa {
-  background-position: -55px -15px;
-}
-
-.payment-img-mastercard {
-  background-position: 103px -15px;
-}
-
-.payment-img-express {
-  background-position: -126px -15px;
-}
-
-.payment-img-maestro {
-  background-position: -55px 47px;
-}
-
-.payment-img-discover {
-  background-position: 175px 115px;
+.payment-img {
+  height: 40px;
+  background: inherit;
+  margin: 0px 15px;
 }

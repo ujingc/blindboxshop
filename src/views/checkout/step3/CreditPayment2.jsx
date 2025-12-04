@@ -7,12 +7,16 @@ import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/re
 
 const CreditPayment = () => {
   const { values, touched, errors, setValues } = useFormikContext();
-  const [cardError, setCardError] = useState(null);
+  const [cardNumberError, setCardNumberError] = useState(null);
+  const [cardExpirationError, setCardExpirationError] = useState(null);
+  const [cardCVCError, setCardCVCError] = useState(null);
+  const [cardBrand, setCardBrand] = useState(null); // e.g., 'visa', 'mastercard', 'amex', etc.
+
   const collapseContainerRef = useRef(null);
   const cardInputRef = useRef(null);
   const containerRef = useRef(null);
   const checkboxContainerRef = useRef(null);
-
+  console.log(cardBrand)
   const toggleCollapse = () => {
     const cn = containerRef.current;
     const cb = checkboxContainerRef.current;
@@ -20,10 +24,10 @@ const CreditPayment = () => {
 
     if (cb && cn && cl) {
       if (values.type === 'credit') {
-        cardInputRef.current.focus();
-        cn.style.height = `${cb.offsetHeight + cl.offsetHeight}px`;
+        // cardInputRef.current.focus();
+        // cn.style.height = `${cb.offsetHeight + cl.offsetHeight}+100px`;
       } else {
-        cardInputRef.current.blur();
+        // cardInputRef.current.blur();
         cn.style.height = `${cb.offsetHeight}px`;
       }
     }
@@ -46,6 +50,7 @@ const CreditPayment = () => {
       e.preventDefault();
     }
   };
+
   return (
     <>
       <h3 className="text-center">Payment</h3>
@@ -76,9 +81,11 @@ const CreditPayment = () => {
                 </span>
               </div>
               <div className="d-flex">
-                <div className="payment-img payment-img-visa" />
-                &nbsp;
-                <div className="payment-img payment-img-mastercard" />
+                <img
+                  src={`/images/creditcard.png`}
+                  alt={cardBrand}
+                  className="payment-img"
+                />
               </div>
             </label>
           </div>
@@ -87,95 +94,111 @@ const CreditPayment = () => {
         {/* --- Actual Credit Card Input Fields (ONLY renders if 'credit' is selected) --- */}
         {values.type === 'credit' && (
           <div className="checkout-collapse-sub" ref={collapseContainerRef}>
-            <span className="d-block padding-s text-center">Accepted Cards</span>
-            <div className="checkout-cards-accepted d-flex-center">
-              <div className="payment-img payment-img-visa" title="Visa" />
-              <div className="payment-img payment-img-express" title="American Express" />
-              <div className="payment-img payment-img-mastercard" title="Master Card" />
-              <div className="payment-img payment-img-maestro" title="Maestro" />
-              <div className="payment-img payment-img-discover" title="Discover" />
-            </div>
-            <br />
             <div className="checkout-field margin-0">
               <div className="checkout-fieldset">
-
-                {/* --- Name on Card (Your existing Formik Field) --- */}
-                <div className="checkout-field">
-                  {/* Ensure this label's 'htmlFor' matches the 'id' of the Field */}
-                  {/* <label htmlFor="cardHolderNameInput">* Name on Card</label> */}
-                  <Field
-                    name="cardName" // IMPORTANT: This should match your Formik state (e.g., initialValues.cardName)
-                    id="cardHolderNameInput" // IMPORTANT: Added ID to match label's htmlFor
-                    type="text"
-                    label="* Name on Card"
-                    placeholder="Jane Doe"
-                    component={CustomInput} // Using your CustomInput component
-                    style={{ textTransform: 'capitalize' }}
-                    inputRef={cardInputRef}
-                  />
-                  {/* Display Formik validation errors for cardName */}
-                  {touched.cardName && errors.cardName && <div className="error-message">{errors.cardName}</div>}
-                </div>
-
               </div>
               <div className="checkout-fieldset stripe-element-container">
                 {/* Card Number */}
                 <div className="checkout-field">
                   <label className='checkout-label'>Card Number</label> {/* Your custom label */}
-                  <CardNumberElement
-                    options={{
-                      style: {invalid: { color: '#9e2146' }},
-                    }}
-                    onChange={(event) => {
-                      if (event.error) {
-                        setCardError(event.error.message);
-                      } else {
-                        setCardError(null);
-                      }
-                    }}
-                  />
-                  {cardError && <div className="card-error">{cardError}</div>}
+                  <div className={`stripe-input-container ${cardNumberError ? 'is-invalid':''}`}>
+                    <CardNumberElement
+                      options={{
+                        style: {
+                          base: {border: '1px solid #c5c5c5'},
+                          invalid: { color: '#df1b41', fontSize: '14px', fontWeight: 'bold', border: '1px'}
+                          }
+                      }}
+                      onChange={(event) => {
+                        if (event.error) {
+                          setCardNumberError(event.error.message);
+                        } else {
+                          setCardNumberError(null);
+                        }
+                        setCardBrand(event.brand)
+                      }}
+                    />
+                    {cardBrand && cardBrand !== 'unknown' ? (
+                      <img
+                        src={`/images/card-brands/${cardBrand}.svg`}
+                        alt={cardBrand}
+                        className="detected-card-brand-icon"
+                      />
+                    ): (
+                      <div className='card-brand-icons-display'>
+                        <img
+                          src={`/images/card-brands/mastercard.svg`}
+                          alt={cardBrand}
+                          className="card-brand-icon"
+                        />
+                        <img
+                          src={`/images/card-brands/visa.svg`}
+                          alt={cardBrand}
+                          className="card-brand-icon"
+                        />
+                        <img
+                          src={`/images/card-brands/amex.svg`}
+                          alt={cardBrand}
+                          className="card-brand-icon"
+                        />
+                        <img
+                          src={`/images/card-brands/unionpay.svg`}
+                          alt={cardBrand}
+                          className="card-brand-icon"
+                        />
+                      </div>
+                    )}
+
+
+                  </div>
+                  {cardNumberError && <div className="card-error">{cardNumberError}</div>}
                 </div>
               </div>
               <div className="checkout-fieldset stripe-element-container"> {/* Grouping Expiry and CVC */}
                 {/* Expiration Date */}
                 <div className="checkout-field">
                   <label className='checkout-label'>Expiration Date</label> {/* Your custom label */}
-                  <CardExpiryElement
-                    options={{
-                      style: {
-                        base: { fontSize: '14px', color: '#424770', '::placeholder': { color: '#aab7c4' } },
-                        invalid: { color: '#9e2146' },
-                      },
-                    }}
-                    onChange={(event) => {
-                      if (event.error) {
-                        setCardError(event.error.message);
-                      } else {
-                        setCardError(null);
-                      }
-                    }}
-                  />
+                  <div className={`stripe-input-container ${cardExpirationError ? 'is-invalid':''}`}>
+                    <CardExpiryElement
+                      options={{
+                        style: {
+                          base: { fontSize: '14px', color: '#424770', '::placeholder': { color: '#aab7c4' } },
+                          invalid: { color: '#df1b41' },
+                        },
+                      }}
+                      onChange={(event) => {
+                        if (event.error) {
+                          setCardExpirationError(event.error.message);
+                        } else {
+                          setCardExpirationError(null);
+                        }
+                      }}
+                    />
+                  </div>
+                  {cardExpirationError && <div className="card-error">{cardExpirationError}</div>}
                 </div>
               </div>
               {/* Security Code (CVC) */}
               <div className="checkout-field stripe-element-container">
                 <label className='checkout-label'>Security Code (CVC)</label> {/* Your custom label */}
-                <CardCvcElement
-                  options={{
-                    style: {
-                      base: { fontSize: '14px', color: '#424770', '::placeholder': { color: '#aab7c4' } },
-                      invalid: { color: '#9e2146' },
-                    },
-                  }}
-                  onChange={(event) => {
-                    if (event.error) {
-                      setCardError(event.error.message);
-                    } else {
-                      setCardError(null);
-                    }
-                  }}
-                />
+                <div className={`stripe-input-container ${cardCVCError ? 'is-invalid':''}`}>
+                  <CardCvcElement
+                    options={{
+                      style: {
+                        base: { fontSize: '14px', color: '#424770', '::placeholder': { color: '#aab7c4' } },
+                        invalid: { color: '#df1b41' },
+                      },
+                    }}
+                    onChange={(event) => {
+                      if (event.error) {
+                        setCardCVCError(event.error.message);
+                      } else {
+                        setCardCVCError(null);
+                      }
+                    }}
+                  />
+                </div>
+                {cardCVCError && <div className="card-error">{cardCVCError}</div>}
               </div>
             </div>
           </div>
