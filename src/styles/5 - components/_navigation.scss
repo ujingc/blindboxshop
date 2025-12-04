@@ -99,7 +99,7 @@
   text-decoration: none;
   font-size: $font-small;
   text-transform: uppercase;
-  font-weight: bold;
+  ;
   position: relative;
 
   &:hover {
@@ -109,6 +109,6 @@
 }
 
 .navigation-menu-active {
-  font-weight: bold;
+  ;
   opacity: 1 !important;
 }

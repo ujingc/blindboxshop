@@ -3,7 +3,7 @@ select {
   color: $paragraph-color;
   padding: 7px $m-size;
   background: transparent;
-  font-weight: bold;
+  ;
   border: 1px solid $border-color;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -42,5 +42,5 @@ select {
 }
 
 option {
-  font-weight: bold;
+  ;
 }
