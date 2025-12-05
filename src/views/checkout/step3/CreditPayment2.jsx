@@ -7,16 +7,20 @@ import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/re
 
 const CreditPayment = () => {
   const { values, touched, errors, setValues } = useFormikContext();
+  const [cardError, setCardError] = useState(null);
   const [cardNumberError, setCardNumberError] = useState(null);
   const [cardExpirationError, setCardExpirationError] = useState(null);
   const [cardCVCError, setCardCVCError] = useState(null);
   const [cardBrand, setCardBrand] = useState(null); // e.g., 'visa', 'mastercard', 'amex', etc.
 
+  const [isCardNumberFocused, setIsCardNumberFocused] = useState(false);
+  const [isCardExpiryFocused, setIsCardExpiryFocused] = useState(false);
+  const [isCardCvcFocused, setIsCardCvcFocused] = useState(false);
+
   const collapseContainerRef = useRef(null);
   const cardInputRef = useRef(null);
   const containerRef = useRef(null);
   const checkboxContainerRef = useRef(null);
-  console.log(cardBrand)
   const toggleCollapse = () => {
     const cn = containerRef.current;
     const cb = checkboxContainerRef.current;
@@ -55,7 +59,7 @@ const CreditPayment = () => {
     <>
       <h3 className="text-center">Payment</h3>
       <br />
-      <span className="d-block padding-s">Payment Option</span>
+      <span className="d-block padding-s text-fontSize-20">Payment Option</span>
       <div
         ref={containerRef}
         className={`checkout-fieldset-collapse ${values.type === 'credit' ? 'is-selected-payment' : ''}`}
@@ -101,8 +105,11 @@ const CreditPayment = () => {
                 {/* Card Number */}
                 <div className="checkout-field">
                   <label className='checkout-label'>Card Number</label> {/* Your custom label */}
-                  <div className={`stripe-input-container ${cardNumberError ? 'is-invalid':''}`}>
+                  <div className={`stripe-input-container ${cardNumberError ? 'is-invalid':''}
+                    ${isCardNumberFocused ? 'is-focus' : ''}`}>
                     <CardNumberElement
+                      onFocus={() => setIsCardNumberFocused(true)} 
+                      onBlur={() => setIsCardNumberFocused(false)} 
                       options={{
                         style: {
                           base: {border: '1px solid #c5c5c5'},
@@ -112,8 +119,10 @@ const CreditPayment = () => {
                       onChange={(event) => {
                         if (event.error) {
                           setCardNumberError(event.error.message);
+                          setCardError(event.error.message);
                         } else {
                           setCardNumberError(null);
+                          setCardError(null)
                         }
                         setCardBrand(event.brand)
                       }}
@@ -151,15 +160,17 @@ const CreditPayment = () => {
 
 
                   </div>
-                  {cardNumberError && <div className="card-error">{cardNumberError}</div>}
                 </div>
               </div>
-              <div className="checkout-fieldset stripe-element-container"> {/* Grouping Expiry and CVC */}
+              <div className="checkout-fieldset stripe-element-container narrow-inline-block"> {/* Grouping Expiry and CVC */}
                 {/* Expiration Date */}
                 <div className="checkout-field">
-                  <label className='checkout-label'>Expiration Date</label> {/* Your custom label */}
-                  <div className={`stripe-input-container ${cardExpirationError ? 'is-invalid':''}`}>
+                  <label className='checkout-label'>Expiration Date (YY/MM)</label> {/* Your custom label */}
+                  <div className={`stripe-input-container ${cardExpirationError ? 'is-invalid':''}
+                    ${isCardExpiryFocused ? 'is-focus' : ''}`}>
                     <CardExpiryElement
+                      onFocus={() => setIsCardExpiryFocused(true)}
+                      onBlur={() => setIsCardExpiryFocused(false)}
                       options={{
                         style: {
                           base: { fontSize: '14px', color: '#424770', '::placeholder': { color: '#aab7c4' } },
@@ -169,20 +180,24 @@ const CreditPayment = () => {
                       onChange={(event) => {
                         if (event.error) {
                           setCardExpirationError(event.error.message);
+                          setCardError(event.error.message);
                         } else {
                           setCardExpirationError(null);
+                          setCardError(null)
                         }
                       }}
                     />
                   </div>
-                  {cardExpirationError && <div className="card-error">{cardExpirationError}</div>}
                 </div>
               </div>
               {/* Security Code (CVC) */}
-              <div className="checkout-field stripe-element-container">
+              <div className="checkout-field stripe-element-container narrow-inline-block">
                 <label className='checkout-label'>Security Code (CVC)</label> {/* Your custom label */}
-                <div className={`stripe-input-container ${cardCVCError ? 'is-invalid':''}`}>
+                <div className={`stripe-input-container ${cardCVCError ? 'is-invalid':''}
+                  ${isCardCvcFocused ? 'is-focus' : ''}`}>
                   <CardCvcElement
+                    onFocus={() => setIsCardCvcFocused(true)}
+                    onBlur={() => setIsCardCvcFocused(false)}
                     options={{
                       style: {
                         base: { fontSize: '14px', color: '#424770', '::placeholder': { color: '#aab7c4' } },
@@ -192,13 +207,27 @@ const CreditPayment = () => {
                     onChange={(event) => {
                       if (event.error) {
                         setCardCVCError(event.error.message);
+                        setCardError(event.error.message);
                       } else {
                         setCardCVCError(null);
+                        setCardError(null)
                       }
                     }}
                   />
                 </div>
-                {cardCVCError && <div className="card-error">{cardCVCError}</div>}
+              </div>
+              {cardError && <div className="card-error">{cardError}</div>}
+
+              <div className="checkout-field" style={{ width: '96%'}}>
+                <Field
+                  name="fullname"
+                  type="text"
+                  maxLength={4}
+                  onKeyDown={handleOnlyNumberInput}
+                  label="Card Name"
+                  placeholder="Full Name"
+                  component={CustomInput}
+                />
               </div>
             </div>
           </div>

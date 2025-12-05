@@ -170,6 +170,15 @@
   @include mobile {
     margin: 0
   }
+
+  .input-form {
+    border-radius: 6px;
+  }
+
+  .input-form:focus {
+    box-shadow: 0 0 0 1px rgba(50,151,211,0.7),0 1px 1px 0 rgba(0,0,0,0.07),0 0 0 4px rgba(50,151,211,0.5) ;
+    outline: none;
+  }
 }
 
 .checkout-fieldset {
@@ -204,7 +213,14 @@
   align-items: center; /* Vertically align the icon with the input */
   padding: 10px 1.6rem !important;
   border: 1px solid #c5c5c5;
+  border-radius: 6px;
 }
+
+.is-focus{
+  box-shadow: 0 0 0 1px rgba(50,151,211,0.7),0 1px 1px 0 rgba(0,0,0,0.07),0 0 0 4px rgba(50,151,211,0.5) ;
+  outline: none;
+}
+
 
 .stripe-input-container.is-invalid {
   border: 1px solid #df1b41;
@@ -218,6 +234,11 @@
   width: auto;
   pointer-events: none; /* Make icon unclickable so it doesn't interfere with input */
   z-index: 1; /* Ensure it's above the iframe, if necessary */
+}
+
+.narrow-inline-block {
+  display: inline-block;
+  width: 48%;
 }
 
 .card-brand-icons-display {
@@ -271,10 +292,15 @@
 }
 
 .card-error {
-  font-size: 0.93rem;
-  ;
+  font-size: 1.1rem;
   padding: 1rem 0;  
   color: #df1b41;
+  pointer-events: none;
+  -webkit-transform-origin: top left;
+  -ms-transform-origin: top left;
+  transform-origin: top left;
+  transition: all .3s ease;
+  margin: 0 1.2rem;
 }
 
 

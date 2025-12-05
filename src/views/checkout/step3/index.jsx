@@ -9,7 +9,6 @@ import * as Yup from 'yup';
 import { StepTracker } from '../components';
 import withCheckout from '../hoc/withCheckout';
 import CreditPayment2 from './CreditPayment2';
-import PayPalPayment from './PayPalPayment';
 import Total from './Total';
 import { setSubmitting, setErrors, resetCheckout } from '@/redux/actions/checkoutActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,7 +45,7 @@ const Payment = ({ payment, subtotal, error }) => {
     cardnumber: payment.cardnumber || '',
     expiry: payment.expiry || '',
     ccv: payment.ccv || '',
-    type: payment.type,
+    type: 'credit',
     paymentMethod: payment.method
   };
 
@@ -126,10 +125,6 @@ const Payment = ({ payment, subtotal, error }) => {
           throw new Error(response.data.error || 'Payment failed from server.');
         }
 
-      } else if (values.paymentMethod === 'paypal') {
-        // --- PAYPAL PAYMENT (As per your existing validation) ---
-        displayActionMessage('PayPal payment is not ready yet. Please choose another method.', 'info');
-        // No further action needed as per your initial validation
       } else {
         throw new Error('Please select a payment method.');
       }
@@ -154,17 +149,11 @@ const Payment = ({ payment, subtotal, error }) => {
         initialValues={initFormikValues}
         validateOnChange
         validationSchema={FormSchema}
-        validate={(form) => {
-          if (form.type === 'paypal') {
-            displayActionMessage('Feature not ready yet :)', 'info');
-          }
-        }}
         onSubmit={onConfirm}
       >
         {() => (
           <Form className="checkout-step-3">
             <CreditPayment2 />
-            <PayPalPayment />
             <Total
               isInternational={shipping.isInternational}
               subtotal={subtotal}
