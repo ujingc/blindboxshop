@@ -216,8 +216,7 @@ const CreditPayment = () => {
                   />
                 </div>
               </div>
-              {cardError && <div className="card-error">{cardError}</div>}
-
+              <div className={`card-error ${cardError ? 'card-error-visible' : ''}`}>{cardError}</div>
               <div className="checkout-field" style={{ width: '96%'}}>
                 <Field
                   name="fullname"

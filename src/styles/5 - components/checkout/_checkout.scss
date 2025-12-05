@@ -293,16 +293,21 @@
 
 .card-error {
   font-size: 1.1rem;
-  padding: 1rem 0;  
-  color: #df1b41;
+  padding: 0 1.2rem; /* Start with 0 padding to collapse nicely */
+    color: #df1b41;
   pointer-events: none;
-  -webkit-transform-origin: top left;
-  -ms-transform-origin: top left;
-  transform-origin: top left;
-  transition: all .3s ease;
+  overflow: hidden; /* Crucial for max-height transitions */
+  max-height: 0;   /* Initially hidden (collapsed) */
+  opacity: 0;      /* Initially transparent */
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease; /* Transition these properties */
   margin: 0 1.2rem;
 }
 
+.card-error-visible {
+  padding: 1rem 1.2rem; /* Add vertical padding when visible */
+  max-height: 100px; /* Or a value large enough to comfortably contain your error message */
+  opacity: 1;      /* Fully visible */
+}
 
 
 .checkout-shipping-action {
