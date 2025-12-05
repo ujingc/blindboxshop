@@ -64,7 +64,7 @@ const ShippingForm = () => {
           <div className="d-block checkout-field">
             <Field
               readOnly="readonly"
-              value="United States"
+              value="US"
               name="country"
               type="text"
               label="* Country"

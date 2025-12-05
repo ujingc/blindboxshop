@@ -14,7 +14,7 @@ import { setSubmitting, setErrors, resetCheckout } from '@/redux/actions/checkou
 import { useDispatch, useSelector } from 'react-redux';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { getApp } from 'firebase/app';
-import { useStripe, useElements } from '@stripe/react-stripe-js';
+import { CardNumberElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const FormSchema = Yup.object().shape({
   name: Yup.string()
@@ -46,7 +46,7 @@ const Payment = ({ payment, subtotal, error }) => {
     expiry: payment.expiry || '',
     ccv: payment.ccv || '',
     type: 'credit',
-    paymentMethod: payment.method
+    paymentMethod: 'credit'
   };
 
   const app = getApp(); // Get your initialized Firebase app instance
@@ -61,7 +61,7 @@ const Payment = ({ payment, subtotal, error }) => {
   const onConfirm = async (values, actions) => {
     dispatch(setSubmitting(true)); // Disable the submit button
     setErrors(null); // Clear any previous card errors
-
+    console.log('called onConfirm method')
     try {
       if (values.paymentMethod === 'credit') {
         // --- CREDIT CARD PAYMENT FLOW ---
@@ -69,9 +69,10 @@ const Payment = ({ payment, subtotal, error }) => {
         if (!stripe || !elements) {
           throw new Error("Stripe.js has not loaded. Please try again.");
         }
+        console.log('paymentMethod is credit, value: ', values.paymentMethod)
         // Get a reference to the CardElement
-        const cardElement = elements.getElement(CardElement);
-        console.log("CardElement instance:", cardElement); // ADD THIS
+        const cardElement = elements.getElement(CardNumberElement);
+        console.log("CardNumberElement instance:", CardNumberElement);
 
         if (!cardElement) { // Explicitly check if it's null before proceeding
           throw new Error("Credit card input is not ready. Please try again.");
@@ -148,7 +149,7 @@ const Payment = ({ payment, subtotal, error }) => {
         disabled={true}
         initialValues={initFormikValues}
         validateOnChange
-        validationSchema={FormSchema}
+        // validationSchema={FormSchema}
         onSubmit={onConfirm}
       >
         {() => (

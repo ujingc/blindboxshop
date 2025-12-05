@@ -56,13 +56,14 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
     addressline2: shipping.address.addressline2 || '',
     city: shipping.address.city || '',
     zipcode: shipping.address.zipcode,
-    country: shipping.address.country || 'United States',
+    country: shipping.address.country || 'US',
     mobile: shipping.mobile || profile.mobile || {},
     isInternational: shipping.isInternational || false,
     isDone: shipping.isDone || false
   };
 
   const onSubmitForm = (form) => {
+    console.log(form)
     dispatch(setShippingDetails({
       address: {
         firstname: form.firstname,

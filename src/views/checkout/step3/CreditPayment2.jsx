@@ -221,11 +221,10 @@ const CreditPayment = () => {
                 <Field
                   name="fullname"
                   type="text"
-                  maxLength={4}
-                  onKeyDown={handleOnlyNumberInput}
-                  label="Card Name"
+                  label="* Name on Card"
                   placeholder="Full Name"
                   component={CustomInput}
+                  style={{ textTransform: 'capitalize' }}
                 />
               </div>
             </div>
