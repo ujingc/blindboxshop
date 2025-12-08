@@ -4,7 +4,7 @@ import { CustomInput } from '@/components/formik';
 import { Field, useFormikContext } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
-
+import COUNTRIES from '@/constants/countries'
 const CreditPayment = () => {
   const { values, touched, errors, setValues } = useFormikContext();
   const [cardError, setCardError] = useState(null);
@@ -131,7 +131,7 @@ const CreditPayment = () => {
                       <img
                         src={`/images/card-brands/${cardBrand}.svg`}
                         alt={cardBrand}
-                        className="detected-card-brand-icon"
+                        className="card-icon"
                       />
                     ): (
                       <div className='card-brand-icons-display'>
@@ -166,7 +166,7 @@ const CreditPayment = () => {
                 {/* Expiration Date */}
                 <div className="checkout-field">
                   <label className='checkout-label'>Expiration Date (YY/MM)</label> {/* Your custom label */}
-                  <div className={`stripe-input-container ${cardExpirationError ? 'is-invalid':''}
+                  <div className={`stripe-input-container left-input ${cardExpirationError ? 'is-invalid':''}
                     ${isCardExpiryFocused ? 'is-focus' : ''}`}>
                     <CardExpiryElement
                       onFocus={() => setIsCardExpiryFocused(true)}
@@ -193,7 +193,7 @@ const CreditPayment = () => {
               {/* Security Code (CVC) */}
               <div className="checkout-field stripe-element-container narrow-inline-block">
                 <label className='checkout-label'>Security Code (CVC)</label> {/* Your custom label */}
-                <div className={`stripe-input-container ${cardCVCError ? 'is-invalid':''}
+                <div className={`stripe-input-container right-input ${cardCVCError ? 'is-invalid':''}
                   ${isCardCvcFocused ? 'is-focus' : ''}`}>
                   <CardCvcElement
                     onFocus={() => setIsCardCvcFocused(true)}
@@ -214,18 +214,38 @@ const CreditPayment = () => {
                       }
                     }}
                   />
+                  <img
+                    src={'/images/card-icon.png'}
+                    alt={'credit card icon'}
+                    className="card-icon"
+                  />
                 </div>
               </div>
               <div className={`card-error ${cardError ? 'card-error-visible' : ''}`}>{cardError}</div>
-              <div className="checkout-field" style={{ width: '96%'}}>
+              <div className="checkout-field narrow-inline-block">
                 <Field
-                  name="fullname"
+                className="stripe-input-container left-input"
+                  name="cardName"
                   type="text"
-                  label="* Name on Card"
+                  label="Name on Card"
                   placeholder="Full Name"
                   component={CustomInput}
                   style={{ textTransform: 'capitalize' }}
                 />
+              </div>
+              <div className="checkout-field narrow-inline-block">
+                <label className='checkout-label' htmlFor="country" >Countries or Regions</label>
+                <Field 
+                  as="select" 
+                  name="country"
+                  id="country"
+                  className="stripe-input-container form-control country-select">
+                  {COUNTRIES.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.name}
+                    </option>
+                  ))}
+                </Field>
               </div>
             </div>
           </div>

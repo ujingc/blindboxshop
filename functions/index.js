@@ -8,6 +8,7 @@ admin.initializeApp();
 // Load Stripe secret key from environment config
 const stripeClient = stripe(functions.config().stripe.secretkey);
 
+
 /**
  * Creates a new order in Firestore and attempts to process a Stripe payment.
  * This function is an HTTPS Callable function, making it easy
@@ -17,7 +18,7 @@ const stripeClient = stripe(functions.config().stripe.secretkey);
 exports.processStripePayment =
   functions.https.onCall(async (data, context) => {
   // 1. Authenticate the caller:
-  // Ensure only YOUR authenticated app can access this.
+    // Ensure only YOUR authenticated app can access this.
     if (!context.auth) {
       throw new functions.https.HttpsError(
           "unauthenticated",
@@ -28,6 +29,7 @@ exports.processStripePayment =
     // 2. Validate input data
     const {
       paymentMethodId, amount, currency, orderItems, shippingInfo,
+      country
     } = data;
     const errorMessage = "The function must be called with 'paymentMethodId'," +
     "'amount', 'currency', 'orderItems', and 'shippingInfo'.";
@@ -83,6 +85,11 @@ exports.processStripePayment =
           userId: context.auth.uid,
         },
         description: `Order ${orderId} by user ${context.auth.uid}`,
+        billing_details: {
+          address: {
+            country: country, // This is where the selected country code goes
+          }
+        }
       // Optionally add customer details, shipping, etc.
       });
 
@@ -132,14 +139,16 @@ exports.processStripePayment =
   });
 
 
-  exports.lowercaseProductName = functions.firestore.document('/products/{documentId}')
+exports.lowercaseProductName =
+  functions.firestore.document("/products/{documentId}")
       .onCreate((snap, context) => {
-          const name = snap.data().name;
-  
-          functions.logger.log('Lowercasing product name', context.params.documentId, name);
-  
-          const lowercaseName = name.toLowerCase();
-  
-          return snap.ref.set({ name_lower: lowercaseName }, { merge: true });
+        const { name } = snap.data();
+        functions
+            .logger
+            .log("Lowercasing product name", context.params.documentId, name);
+
+        const lowercaseName = name.toLowerCase();
+
+        return snap.ref.set({ name_lower: lowercaseName }, { merge: true });
       });
-  
+

@@ -30,7 +30,8 @@ const FormSchema = Yup.object().shape({
     .min(3, 'CCV length should be 3-4 digit')
     .max(4, 'CCV length should only be 3-4 digit')
     .required('CCV is required.'),
-  type: Yup.string().required('Please select paymend mode')
+  type: Yup.string().required('Please select paymend mode'),
+  country: Yup.string().required('Please select your country.'),
 });
 
 const Payment = ({ payment, subtotal, error }) => {
@@ -46,6 +47,8 @@ const Payment = ({ payment, subtotal, error }) => {
     expiry: payment.expiry || '',
     ccv: payment.ccv || '',
     type: 'credit',
+    cardName: '',
+    country: 'US',
     paymentMethod: 'credit'
   };
 

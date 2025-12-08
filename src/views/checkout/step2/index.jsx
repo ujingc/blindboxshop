@@ -63,7 +63,8 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
   };
 
   const onSubmitForm = (form) => {
-    console.log(form)
+    console.log('shipping form', form)
+    // user fill in the shipping detail form which is gonna be used later in order table and passed to stripe.
     dispatch(setShippingDetails({
       address: {
         firstname: form.firstname,
@@ -71,8 +72,8 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
         addressline1: form.addressline1,
         addressline2: form.addressline2,
         country: form.country,
+        city: form.city,
         zipcode: form.zipcode,
-        city: form.city
       },
       mobile: form.mobile,
       isInternational: form.isInternational,

@@ -211,7 +211,7 @@
 .stripe-input-container{
   position: relative; /* Needed for absolute positioning of icon */
   align-items: center; /* Vertically align the icon with the input */
-  padding: 10px 1.6rem !important;
+  padding: 10px 10px !important;
   border: 1px solid #c5c5c5;
   border-radius: 6px;
 }
@@ -221,24 +221,33 @@
   outline: none;
 }
 
+.stripe-input-container.right-input {
+  border-radius: 0 5px 5px 0 !important;
+}
+
+.stripe-input-container.left-input {
+  border-radius: 5px 0 0 5px !important;
+  border-right: none;        /* Explicitly removes the right border */
+}
 
 .stripe-input-container.is-invalid {
   border: 1px solid #df1b41;
 }
 
-.stripe-input-container .detected-card-brand-icon {
+.stripe-input-container .card-icon {
   position: absolute; /* Position relative to .stripe-input-container */
   right: 5px; /* Adjust as needed */
-  top: 3px;
-  height: 30px; /* Adjust size of your icon */
+  top: 5px;
+  height: 25px; /* Adjust size of your icon */
   width: auto;
   pointer-events: none; /* Make icon unclickable so it doesn't interfere with input */
   z-index: 1; /* Ensure it's above the iframe, if necessary */
 }
 
 .narrow-inline-block {
-  display: inline-block;
+  display: inline-grid;
   width: 48%;
+  margin: 0 !important;
 }
 
 .card-brand-icons-display {
@@ -262,8 +271,6 @@
   margin: 0 2px;
 }
 
-
-
 .checkout-checkbox-field {
   display: flex;
   align-items: center;
@@ -280,6 +287,14 @@
   border: none;
 }
 
+.country-select {
+  display: flex;
+  padding: 10px 1.6rem !important;
+  border: 1px solid #c5c5c5 !important;
+  font-size: 1.5rem !important;
+  outline: 0;
+}
+
 .checkout-label:hover{
   background: none;
   padding: 1rem 0.2rem;
@@ -292,6 +307,7 @@
 }
 
 .card-error {
+  width: 100%;
   font-size: 1.1rem;
   padding: 0 1.2rem; /* Start with 0 padding to collapse nicely */
     color: #df1b41;
@@ -304,6 +320,7 @@
 }
 
 .card-error-visible {
+  width: 100%;
   padding: 1rem 1.2rem; /* Add vertical padding when visible */
   max-height: 100px; /* Or a value large enough to comfortably contain your error message */
   opacity: 1;      /* Fully visible */
