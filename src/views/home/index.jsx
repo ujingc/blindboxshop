@@ -9,6 +9,9 @@ import {
 import bannerImg from '@/images/banner-girl.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
+// Import your video files
+import bannerVideoMp4 from '@/assets/videos/banner-video.mp4'; // Adjust path
+import bannerVideoPoster from '@/assets/images/banner-rubbit.png'; // An image to show before video loads/if it fails
 
 
 const Home = () => {
@@ -33,14 +36,13 @@ const Home = () => {
       <div className="home">
         <div className="banner">
           <div className="banner-desc">
-            <h1 className="text-thin">
-              <strong>See</strong>
-              &nbsp;everything with&nbsp;
-              <strong>Clarity</strong>
+            <h1 className="text-thin">          
+              <strong>Discover</strong>
+              &nbsp;the Magic of the&nbsp;
+              <strong>Holiday Season</strong>
             </h1>
             <p>
-              Buying eyewear should leave you happy and good-looking, with money in your pocket.
-              Glasses, sunglasses, and contacts—we’ve got your eyes covered.
+              Join our adorable friends on a heartwarming winter walk. Find your perfect festive collectible today!
             </p>
             <br />
             <Link to={SHOP} className="button">
@@ -48,7 +50,12 @@ const Home = () => {
               <ArrowRightOutlined />
             </Link>
           </div>
-          <div className="banner-img"><img src={bannerImg} alt="" /></div>
+          <div className="banner-video-container"> {/* Renamed for clarity */}
+            <video autoPlay loop muted playsInline className="banner-video" poster={bannerVideoPoster}>
+              <source src={bannerVideoMp4} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
 
         <section className="section">

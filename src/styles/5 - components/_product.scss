@@ -4,7 +4,7 @@
   grid-gap: $s-size;
   justify-content: center;
   padding: 10rem;
-
+  margin: $xxl-size;
   @include mobile {
     grid-template-columns: repeat(2, 1fr) !important;
   }
