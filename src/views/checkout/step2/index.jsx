@@ -101,7 +101,6 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
                   <br />
                   {/*  ---- TOTAL --------- */}
                   <ShippingTotal subtotal={subtotal} />
-                  <br />
                   {/*  ----- NEXT/PREV BUTTONS --------- */}
                   <div className="checkout-shipping-action">
                     <button

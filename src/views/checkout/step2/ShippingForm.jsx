@@ -34,22 +34,13 @@ const ShippingForm = () => {
             <Field
               name="addressline1"
               type="text"
-              label="* Shipping Address Line 1"
+              label="* Shipping Address Line"
               placeholder="Street Address"
               component={CustomInput}
             />
           </div>
         </div>
         <div className="checkout-fieldset">
-          <div className="d-block checkout-field">
-            <Field
-              name="addressline2"
-              type="text"
-              label="* Shipping Address Line 2"
-              placeholder="Apartment, suite, building (optional)"
-              component={CustomInput}
-            />
-          </div>
         </div>
         <div className="checkout-fieldset">
           <div className="d-block checkout-field">

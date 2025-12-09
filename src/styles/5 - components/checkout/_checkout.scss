@@ -7,6 +7,12 @@
   }
 }
 
+@mixin mobile {
+  @media (max-width: 767px) { // Adjust breakpoint as needed
+    @content;
+  }
+}
+
 .checkout-header {
   display: flex;
   justify-content: center;
@@ -146,7 +152,7 @@
 }
 
 .checkout-step-3 {
-  width: 70rem;
+  width: 60rem;
   margin: auto;
 
   @include tablet {
@@ -163,9 +169,29 @@
   width: 100%;
 }
 
+
+// ----------------------------- Check out payment section -----------------------------
+
+.checkout-payment-section {
+  background-color: $color-background-light;
+  // Overall container for payment section
+}
+
 .checkout-field {
   width: 100%;
-  margin: 0 $s-size;
+  margin: 0 $s-size; // Use variables
+  margin-bottom: $s-size; // Add some default bottom margin
+
+  @include mobile {
+    margin: 0;
+    margin-bottom: $s-size; // Keep some mobile margin
+  }
+}
+
+
+.checkout-field {
+  width: 100%;
+  margin: 0 0 $s-size 0;
   
   @include mobile {
     margin: 0
@@ -181,151 +207,175 @@
   }
 }
 
-.checkout-fieldset {
-  display: flex;
-  align-items: center;
-
-  & > div {
-    margin-bottom: $s-size;
-  }
-
-  @include mobile {
-    flex-direction: column;
-  }
-}
-
-.checkout-fieldset-collapse {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  height: auto;
-  overflow: hidden;
-  transition: all .5s ease;
-  opacity: .6;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-
-.stripe-input-container{
-  position: relative; /* Needed for absolute positioning of icon */
-  align-items: center; /* Vertically align the icon with the input */
-  padding: 10px 10px !important;
-  border: 1px solid #c5c5c5;
-  border-radius: 6px;
-}
-
-.is-focus{
-  box-shadow: 0 0 0 1px rgba(50,151,211,0.7),0 1px 1px 0 rgba(0,0,0,0.07),0 0 0 4px rgba(50,151,211,0.5) ;
-  outline: none;
-}
-
-.stripe-input-container.right-input {
-  border-radius: 0 5px 5px 0 !important;
-}
-
-.stripe-input-container.left-input {
-  border-radius: 5px 0 0 5px !important;
-  border-right: none;        /* Explicitly removes the right border */
-}
-
-.stripe-input-container.is-invalid {
-  border: 1px solid #df1b41;
-}
-
-.stripe-input-container .card-icon {
-  position: absolute; /* Position relative to .stripe-input-container */
-  right: 5px; /* Adjust as needed */
-  top: 5px;
-  height: 25px; /* Adjust size of your icon */
-  width: auto;
-  pointer-events: none; /* Make icon unclickable so it doesn't interfere with input */
-  z-index: 1; /* Ensure it's above the iframe, if necessary */
-}
-
-.narrow-inline-block {
-  display: inline-grid;
-  width: 48%;
-  margin: 0 !important;
-}
-
-.card-brand-icons-display {
-  display: flex; /* Make this a flex container for multiple icons */
-  align-items: center;
-  position: absolute; /* Position relative to .stripe-input-container */
-  right: 2px; /* Adjust as needed */
-  top: 3px;
-  width: auto;
-  pointer-events: none;
-  z-index: 99;
-  flex-shrink: 0; /* Prevent icons from shrinking */
-  line-height: 1; /* Helps with vertical alignment */
-}
-
-.card-brand-icons-display .card-brand-icon {
-  height: 30px; /* Default size for a single detected icon */
-  width: auto;
-  pointer-events: none; /* Make icon unclickable */
-  transition: opacity 0.3s ease; /* Smooth transition for icon changes */
-  margin: 0 2px;
-}
 
 .checkout-checkbox-field {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $m-size;
-  border: 1px solid $border-color;
-  background: #f1f1f1;
+  padding: $s-size $m-size;
+  border: 1px solid $border-color-default;
+  background: $color-background-light;
+
+  & label {
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
+
+  & h4 {
+    margin: 0;
+  }
+
+  & .text-subtle {
+    color: $color-text-subtle;
+    display: block;
+    margin-top: $s-size;
+  }
 }
 
-.checkout-label{
-  background: none;
-  padding: 1rem 0.2rem;
-  color: #696868;
+.checkout-collapse-sub {
+  width: 100%;
+  padding: $m-size;
+  border: 1px solid $border-color;
+  background: $white;
+}
+
+
+.checkout-fieldset {
+  display: flex;
+  align-items: center;
+  @include mobile {
+    flex-direction: column;
+    gap: 0; // Or adjust gap for mobile
+  }
+}
+
+.checkout-fieldset__stripe-group { // More specific name for the expiry/CVC group
+  display: flex;
+  width: 100%; // Make it take full width
+  
+  @include mobile {
+    flex-direction: row; // Maintain row for these two on mobile if they fit
+  }
+}
+
+.stripe-input-container {
+  flex-grow: 1; // Allows it to fill available space in a flex container
+  position: relative;
+  padding: $s-size; // Use variable, no !important needed if specificity is right
+  border: 1px solid $border-color-default;
+  border-radius: 6px;
+  transition: box-shadow 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+
+  &.is-focus {
+    border-color: $color-primary-blue; // Use variable
+    box-shadow: 0 0 0 1px rgba($color-primary-blue,0.7), 0 1px 1px 0 rgba(0,0,0,0.07), 0 0 0 4px rgba($color-primary-blue,0.5); // Use variable
+    outline: none;
+  }
+
+  &.is-invalid {
+    border-color: $color-error-red; // Use variable
+  }
+
+  // Styling for the Stripe Elements iframes can often be targeted by their container
+  // But direct styling via options.style in JSX is more robust.
+  // Example for targeting a contained iframe:
+  & iframe {
+    padding: 0; // Remove default iframe padding if any
+    border: none;
+    height: 100%; // Ensure iframe fills container
+    width: 100%;
+    background-color: transparent; // Iframes can have background
+  }
+}
+
+.stripe-input-container--left { // More semantic modifier
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+.stripe-input-container--right { // More semantic modifier
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.stripe-input-card-name {
+  border: 1px solid $border-color-default;
+  border-radius: 6px;
+  transition: box-shadow 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.stripe-input-card-name:focus {
+    border-color: $color-primary-blue; // Use variable
+    box-shadow: 0 0 0 1px rgba($color-primary-blue,0.7), 0 1px 1px 0 rgba(0,0,0,0.07), 0 0 0 4px rgba($color-primary-blue,0.5); // Use variable
+    outline: none;
+}
+
+.checkout-label, .label-input {
+  display: block; // Ensures it takes its own line
+  padding: 0.2rem;
+  color: $color-text-subtle;
+  background: $white;
   border: none;
+  font-size: 15px
+  // No need for redundant hover state if it's the same
+}
+
+.checkout-label:hover {
+  background: $white;
+}
+
+.card-icon,
+.card-brand-icons-display {
+  position: absolute;
+  right: 5px;
+  height: 25px;
+  top: 50%;
+  transform: translateY(-50%); // Vertically center
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-brand-icons-display {
+  display: flex;
+  gap: 2px; // Space between multiple card brand icons
+}
+
+.card-brand-icons-display .card-brand-icon {
+  height: 30px;
+  width: auto;
 }
 
 .country-select {
-  display: flex;
-  padding: 10px 1.6rem !important;
-  border: 1px solid #c5c5c5 !important;
-  font-size: 1.5rem !important;
-  outline: 0;
-}
-
-.checkout-label:hover{
-  background: none;
-  padding: 1rem 0.2rem;
-  color: #696868;
-  border: none;
-}
-
-::placeholder {
-  color: '#aab7c4'
+  @extend .stripe-input-container; // Inherit base styles
+  width: 100%;
+  appearance: none; // Remove default arrow
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E"); // Custom arrow
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  font-size: 1.5rem; // Adjust as needed
 }
 
 .card-error {
   width: 100%;
   font-size: 1.1rem;
-  padding: 0 1.2rem; /* Start with 0 padding to collapse nicely */
-    color: #df1b41;
+  color: $color-error-red;
+  padding: 0 $s-size;
   pointer-events: none;
-  overflow: hidden; /* Crucial for max-height transitions */
-  max-height: 0;   /* Initially hidden (collapsed) */
-  opacity: 0;      /* Initially transparent */
-  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease; /* Transition these properties */
-  margin: 0 1.2rem;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
 }
 
 .card-error-visible {
-  width: 100%;
-  padding: 1rem 1.2rem; /* Add vertical padding when visible */
-  max-height: 100px; /* Or a value large enough to comfortably contain your error message */
-  opacity: 1;      /* Fully visible */
+  padding: $s-size;
+  max-height: 100px;
+  opacity: 1;
 }
-
 
 .checkout-shipping-action {
   display: flex;
@@ -342,35 +392,4 @@
       margin: $s-size 0;
     }
   }
-}
-
-.checkout-collapse-sub {
-  width: 100%;
-  padding: $m-size;
-  border: 1px solid $border-color;
-  background: $white;
-}
-
-.checkout-cards-accepted {
-  .payment-img {
-    margin: 0 2px;
-  }
-}
-
-.payment-img {
-  width: 48px;
-  height: 32px;
-  background: url('/static/creditcards.png');
-  background-size: 300px 200px;
-  border-radius: 2px;
-}
-
-.payment-img-paypal {
-  background-position: 103px 115px;
-}
-
-.payment-img {
-  height: 40px;
-  background: inherit;
-  margin: 0px 15px;
 }
