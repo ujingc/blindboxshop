@@ -16,7 +16,6 @@ const ShippingForm = () => {
               label="* First Name"
               placeholder="Enter your first name"
               component={CustomInput}
-              style={{ textTransform: 'capitalize' }}
             />
           </div>
           <div className="d-block checkout-field">

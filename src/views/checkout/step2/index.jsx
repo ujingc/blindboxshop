@@ -18,14 +18,19 @@ import ShippingTotal from './ShippingTotal';
 
 const FormSchema = Yup.object().shape({
   firstname: Yup.string()
+    .matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, 'Name can only contain letters, spaces, hyphens, or apostrophes')
     .required('First name is required.'),
   lastname: Yup.string()
+    .matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, 'Name can only contain letters, spaces, hyphens, or apostrophes')
     .required('Last name is required.'),
   addressline1: Yup.string()
+    .matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, 'Name can only contain letters, spaces, hyphens, or apostrophes')
     .required('Shipping address line is required.'),
   addressline2: Yup.string()
+    .matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, 'Name can only contain letters, spaces, hyphens, or apostrophes')
     .optional(),
   city: Yup.string()
+    .matches(/^[a-zA-ZÀ-ÿ\s'-]+$/, 'Name can only contain letters, spaces, hyphens, or apostrophes')
     .required('City is required.'),
   country: Yup.string()
     .required('Country is required.'),
@@ -50,8 +55,8 @@ const ShippingDetails = ({ profile, shipping, subtotal }) => {
   const history = useHistory();
 
   const initFormikValues = {
-    firstname: shipping.firstname || '',
-    lastname: shipping.lastname || '',
+    firstname: shipping.address.firstname || '',
+    lastname: shipping.address.lastname || '',
     addressline1: shipping.address.addressline1 || '',
     addressline2: shipping.address.addressline2 || '',
     city: shipping.address.city || '',

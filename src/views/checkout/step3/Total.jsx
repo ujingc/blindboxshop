@@ -29,7 +29,6 @@ const Total = ({ isInternational, subtotal }) => {
           {displayMoney(subtotal + (isInternational ? 50 : 0))}
         </h2>
       </div>
-      <br />
       <div className="checkout-shipping-action">
         <button
           className="button button-muted"

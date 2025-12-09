@@ -259,7 +259,7 @@
   }
 }
 
-.stripe-input-container {
+.stripe-input-container,.stripe-input-card-name {
   flex-grow: 1; // Allows it to fill available space in a flex container
   position: relative;
   padding: $s-size; // Use variable, no !important needed if specificity is right
@@ -301,12 +301,6 @@
   border-bottom-left-radius: 0;
 }
 
-.stripe-input-card-name {
-  border: 1px solid $border-color-default;
-  border-radius: 6px;
-  transition: box-shadow 0.15s ease-in-out, border-color 0.15s ease-in-out;
-}
-
 .stripe-input-card-name:focus {
     border-color: $color-primary-blue; // Use variable
     box-shadow: 0 0 0 1px rgba($color-primary-blue,0.7), 0 1px 1px 0 rgba(0,0,0,0.07), 0 0 0 4px rgba($color-primary-blue,0.5); // Use variable
@@ -319,7 +313,8 @@
   color: $color-text-subtle;
   background: $white;
   border: none;
-  font-size: 15px
+  font-size: 15px;
+  margin: 0 0 4px 0;
   // No need for redundant hover state if it's the same
 }
 
