@@ -5,7 +5,7 @@ import bannerImg from '@/assets/images/banner-rubbit.png';
 import React from 'react';
 
 const FeaturedProducts = () => {
-  useDocumentTitle('Featured Products | Salinaka');
+  useDocumentTitle('Featured Products | Cotta');
   useScrollTop();
 
   const {

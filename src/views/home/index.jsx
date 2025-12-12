@@ -15,7 +15,7 @@ import bannerVideoPoster from '@/assets/images/banner-rubbit.png'; // An image t
 
 
 const Home = () => {
-  useDocumentTitle('Salinaka | Home');
+  useDocumentTitle('Cotta | Home');
   useScrollTop();
 
   const {

@@ -44,7 +44,7 @@ const FormSchema = Yup.object().shape({
 });
 
 const Payment = ({ payment, subtotal, error }) => {
-  useDocumentTitle('Check Out Final Step | Salinaka');
+  useDocumentTitle('Check Out Final Step | Cotta');
   useScrollTop();
   const { shipping } = useSelector((state) => ({
     shipping: state.checkout.shipping,
