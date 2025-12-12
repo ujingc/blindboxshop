@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Select from 'react-select';
+import ProductImageCarousel from '@/components/product/ProductImageCarousel';
 
 const ViewProduct = () => {
   const { id } = useParams();
@@ -69,13 +70,13 @@ const ViewProduct = () => {
       {(product && !isLoading) && (
         <div className="product-view">
           <Link to={SHOP}>
-            <h3 className="button-link d-inline-flex">
+            <h3 className="button-link d-inline-flex zIndex99">
               <ArrowLeftOutlined />
-              &nbsp; Back to shop
+              &nbsp;
             </h3>
           </Link>
           <div className="product-modal">
-            {product?.imageCollection?.length !== 0 && (
+            {/* {product?.imageCollection?.length !== 0 && (
               <div className="product-modal-image-collection">
                 {product?.imageCollection?.map((image) => (
                   <div
@@ -91,16 +92,20 @@ const ViewProduct = () => {
                   </div>
                 ))}
               </div>
-            )}
-            <div className="product-modal-image-wrapper">
+            )} */}
+            {/* <div className="product-modal-image-wrapper">
               {selectedColor && <input type="color" disabled ref={colorOverlay} id="color-overlay" />}
               <ImageLoader
                 alt={product.name}
                 className="product-modal-image"
                 src={selectedImage}
               />
-            </div>
-            <div className="product-modal-details">
+            </div> */}
+              <ProductImageCarousel
+                images={[...product.images
+                ]}
+              />
+            {/* <div className="product-modal-details">
               <br />
               <span className="text-subtle">{product.brand}</span>
               <h1 className="margin-top-0">{product.name}</h1>
@@ -113,15 +118,15 @@ const ViewProduct = () => {
                 <span className="text-subtle">Lens Width and Frame Size</span>
                 <br />
                 <br />
-                {/* <Select
+                <Select
                   placeholder="--Select Size--"
                   onChange={onSelectedSizeChange}
                   options={product?.sizes?.sort((a, b) => (a < b ? -1 : 1))?.map((size) => ({ label: `${size} mm`, value: size }))}
                   styles={{ menu: (provided) => ({ ...provided, zIndex: 10 }) }}
-                /> */}
+                />
               </div>
               <br />
-              {/* {product?.availableColors?.length >= 1 && (
+              {product?.availableColors?.length >= 1 && (
                 <div>
                   <span className="text-subtle">Choose Color</span>
                   <br />
@@ -131,8 +136,8 @@ const ViewProduct = () => {
                     onSelectedColorChange={onSelectedColorChange}
                   />
                 </div>
-              )} */}
-            </div>
+              )}
+            </div> */}
           </div>
           <div style={{ marginTop: '10rem' }}>
             <div className="display-header">
@@ -149,49 +154,50 @@ const ViewProduct = () => {
               <ProductShowcaseGrid products={recommendedProducts} skeletonCount={3} />
             )}
           </div>
-
-          <div className='product-modal-sticky-footer'>
-          <div className='product-modal-play-tricks'>
-            <div>    Claim your mistery   </div>
-            <i className='Outline in the mist'></i>
-            <div>    Shake the future   </div>
-            <i className='A crystal ball of fate containing stardust'></i>
-            <div>    Reveal Your treasure   </div>
-            <i className='A treasure chest that opens with a radiant glow'></i>
-          </div>
-          <div className='product-modal-buy-box'>
-            <div className='pruchase-info'>
-              <div className='price-info'>
-                <span>{displayMoney(product.price)}</span>
-              </div>
-              <div className='product-modal-action'>
-                <button
-                  className={`button button-small ${isItemOnBasket(product.id) ? 'button-border button-border-gray' : ''}`}
-                  onClick={handleAddToBasket}
-                  type="button"
-                >
-                  {isItemOnBasket(product.id) ? 'Remove From Basket' : 'Add To Basket'}
-                </button>
-                {/* <hr></hr> */}
-              </div>
-            </div>
-            <div className='fullfillment'>
-              <div className='delivery-icon'>
-                <i className='fa fa-truck' style={{ fontSize: '2rem' }}/>
-              </div>
-              <div>
-                <span className='stock-status-text'>In Stock</span>
-              </div>
-              <div>
-                <span className='fullfill-text'>FREE delivery Saturday, December 6 to Hong Kong on eligible orders over $49. </span>
-              </div>
-            </div>
-          </div>
-          </div>
         </div>
       )}
     </main>
   );
 };
+
+
+        // <div className='product-modal-sticky-footer'>
+        //   <div className='product-modal-play-tricks'>
+        //     <div>    Claim your mistery   </div>
+        //     <i className='Outline in the mist'></i>
+        //     <div>    Shake the future   </div>
+        //     <i className='A crystal ball of fate containing stardust'></i>
+        //     <div>    Reveal Your treasure   </div>
+        //     <i className='A treasure chest that opens with a radiant glow'></i>
+        //     </div>
+        //     <div className='product-modal-buy-box'>
+        //       <div className='pruchase-info'>
+        //         <div className='price-info'>
+        //           <span>{displayMoney(product.price)}</span>
+        //         </div>
+        //         <div className='product-modal-action'>
+        //           <button
+        //             className={`button button-small ${isItemOnBasket(product.id) ? 'button-border button-border-gray' : ''}`}
+        //             onClick={handleAddToBasket}
+        //             type="button"
+        //           >
+        //             {isItemOnBasket(product.id) ? 'Remove From Basket' : 'Add To Basket'}
+        //           </button>
+        //           {/* <hr></hr> */}
+        //         </div>
+        //       </div>
+        //       <div className='fullfillment'>
+        //         <div className='delivery-icon'>
+        //           <i className='fa fa-truck' style={{ fontSize: '2rem' }}/>
+        //         </div>
+        //         <div>
+        //           <span className='stock-status-text'>In Stock</span>
+        //         </div>
+        //         <div>
+        //           <span className='fullfill-text'>FREE delivery Saturday, December 6 to Hong Kong on eligible orders over $49. </span>
+        //         </div>
+        //       </div>
+        //     </div>
+        //   </div>
 
 export default ViewProduct;
