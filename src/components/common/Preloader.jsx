@@ -1,5 +1,5 @@
 import React from 'react';
-import logoWordmark from '../../../static/logo-wordmark.png';
+import logoWordmark from '@/assets/images/logo.png';
 
 const Preloader = () => (
   <div className="preloader">

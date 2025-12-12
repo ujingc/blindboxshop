@@ -6,7 +6,6 @@ import { FEATURED_PRODUCTS, RECOMMENDED_PRODUCTS, SHOP } from '@/constants/route
 import {
   useDocumentTitle, useFeaturedProducts, useRecommendedProducts, useScrollTop
 } from '@/hooks';
-import bannerImg from '@/images/banner-girl.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
 // Import your video files

@@ -7,8 +7,8 @@ import {
   SIGNOUT, SIGNUP
 } from '@/constants/constants';
 import { SIGNIN as ROUTE_SIGNIN } from '@/constants/routes';
-import defaultAvatar from '@/images/defaultAvatar.jpg';
-import defaultBanner from '@/images/defaultBanner.jpg';
+import defaultAvatar from '@/assets/images/logo.png';
+import defaultBanner from '@/assets/images/logo.png';
 import { call, put } from 'redux-saga/effects';
 import { signInSuccess, signOutSuccess } from '@/redux/actions/authActions';
 import { clearBasket, setBasketItems } from '@/redux/actions/basketActions';

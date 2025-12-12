@@ -111,7 +111,7 @@ const CreditPayment = () => {
               />
               {cardBrand && cardBrand !== 'unknown' ? (
                 <img
-                  src={`/images/card-brands/${cardBrand}.svg`}
+                  src={`/assets/images/${cardBrand}.svg`}
                   alt={cardBrand}
                   className="card-icon"
                 />

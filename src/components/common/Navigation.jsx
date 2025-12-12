@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import { FilterOutlined, ShoppingOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import * as ROUTE from '@/constants/routes';
-import logo from '@/images/logo-full.png';
+import logo from '@/assets/images/logo.png';
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
