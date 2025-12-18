@@ -20,7 +20,7 @@ const ProductItem = ({ product, isItemOnBasket, addToBasket }) => {
   const itemOnBasket = isItemOnBasket ? isItemOnBasket(product.id) : false;
 
   const handleAddToBasket = () => {
-    if (addToBasket && product) addToBasket({ ...product, selectedSize: '0' });
+    if (addToBasket && product) addToBasket({ ...product, quantity: 1 });
   };
 
   return (

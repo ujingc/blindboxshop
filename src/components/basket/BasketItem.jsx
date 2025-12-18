@@ -34,8 +34,8 @@ const BasketItem = ({ product }) => {
               <span className="spec-title">Quantity</span>
               <h5 className="my-0">{product.quantity}</h5>
             </div>
-            <div>
-              <span className="spec-title">Size</span>
+            {/* <div>
+              <span className="spec-title">Style</span>
               <h5 className="my-0">
                 {product.selectedSize}
                 {' '}
@@ -51,7 +51,7 @@ const BasketItem = ({ product }) => {
                 borderRadius: '50%'
               }}
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="basket-item-price">

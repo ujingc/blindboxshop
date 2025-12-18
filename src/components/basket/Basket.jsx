@@ -23,6 +23,7 @@ const Basket = () => {
   const didMount = useDidMount();
 
   useEffect(() => {
+    console.log(basket)
     if (didMount && firebase.auth.currentUser && basket.length !== 0) {
       firebase.saveBasketItems(basket, firebase.auth.currentUser.uid)
         .then(() => {

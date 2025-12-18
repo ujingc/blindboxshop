@@ -19,6 +19,7 @@ import ProductStickyFooter from '@/components/product/ProductStickyFooter';
 const ViewProduct = () => {
   const { id } = useParams();
   const { product, isLoading, error } = useProduct(id);
+  const { collection } = useProduct(product?.collectionId)
   const { addToBasket, isItemOnBasket } = useBasket(id);
   useScrollTop();
   useDocumentTitle(`View ${product?.name || 'Item'}`);
@@ -26,7 +27,6 @@ const ViewProduct = () => {
   const [selectedImage, setSelectedImage] = useState(product?.image || '');
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
-
   const {
     recommendedProducts,
     fetchRecommendedProducts,
@@ -50,9 +50,10 @@ const ViewProduct = () => {
     }
   };
 
-  const handleAddToBag = () => {
+  const handleAddToBasket = (args) => {
+    const { option, price, quantity } = args;
     if(product){
-    addToBasket({ ...product, selectedColor, selectedSize: selectedSize || '0' });
+      addToBasket({ ...product, selectedColor, quantity: quantity});
     }
   };
 
@@ -86,7 +87,7 @@ const ViewProduct = () => {
                 productSetPrice={100.00} // Example: price for 5 toys in a set
                 deliveryEstimate="Arrives by Tuesday, Dec 24th"
                 freeShippingThreshold={50.00}
-                onAddToBag={handleAddToBag}
+                onAddToBasket={handleAddToBasket}
               />
           </div>
           <div> 

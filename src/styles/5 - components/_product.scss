@@ -202,11 +202,8 @@
 
 .product-modal {
   width: 100%;
-  display: flex;
   background: #fff;
   border: 1px solid #e1e1e1;
-  margin-top: $xxl-size;
-  justify-content: space-around;
   @include tablet {
     flex-direction: column;
     margin: 0;
@@ -779,7 +776,8 @@
 // ---------------------------- PRODUCTS CAROUSEL----------------------------
 
 .product-carousel {
-    width: 100%;
+    width: 80%;
+    margin: auto;
     position: relative;
     margin-bottom: $s-size * 2;
 }
@@ -929,6 +927,7 @@
     z-index: 1000; // Ensures it's on top of almost everything else
     font-family: $font-family-primary;
     padding: $s-size 0; // Vertical padding for the footer container
+    margin-top: $l-size;
 }
 
 .product-sticky-footer__content {
@@ -1010,58 +1009,136 @@
 
 .product-sticky-footer__buy-options {
     display: flex;
-    gap: $s-size; // Space between radio buttons
+    gap: 16px; /* Adjust spacing as needed */
 }
 
 .product-sticky-footer__buy-option {
     display: flex;
     align-items: center;
     cursor: pointer;
-    font-size: $s-size;
-    color: $color-text-dark;
-
-    input[type="radio"] {
-        margin-right: 5px;
-        appearance: none; // Hide default radio button
-        width: 18px;
-        height: 18px;
-        border: 2px solid $color-border-grey;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.2s ease-in-out;
-
-        &::before {
-            content: '';
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: $color-primary-blue;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.2s ease-in-out;
-        }
-
-        &:checked {
-            border-color: $color-primary-blue;
-            &::before {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        &:disabled {
-            background-color: #f0f0f0;
-            cursor: not-allowed;
-            border-color: #ccc;
-            &::before {
-                background-color: #ccc;
-            }
-        }
-    }
+    font-size: 16px; /* Adjust font size as needed */
+    color: #333; /* Default color */
+    position: relative; /* For icon positioning */
 }
 
+.product-sticky-footer__buy-option input[type="radio"] {
+    display: none; /* Hide the default radio button */
+}
+
+.product-sticky-footer__buy-option .icon {
+    font-size: 24px; /* Adjust icon size */
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.product-sticky-footer__buy-option.selected {
+    background-color: #f0f0f0; /* Make the selected option look darker */
+    border-radius: 5px; /* Optional: add some rounding */
+    padding: 1.2rem 1.5rem;
+    color: #000; /* Change text color for selected state */
+    border: 1px solid $color-primary-blue;
+}
+
+.product-sticky-footer__buy-option:hover{
+  border: 1px solid $color-primary-blue;
+}
+
+.product-sticky-footer__buy-option.disabled {
+    color: #ccc; /* Change color for disabled option */
+    cursor: not-allowed; /* Change cursor for disabled option */
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ccc; /* Rectangle border */
+    border-radius: 5px; /* Optional: rounded corners */
+    padding: 5px; /* Space inside the border */
+}
+
+.quantity-button {
+    background-color: #f0f0f0; /* Button background color */
+    border: none; /* Remove default button border */
+    color: #333; /* Button text color */
+    font-size: 20px; /* Adjust font size */
+    width: 40px; /* Fixed width for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.quantity-input {
+    width: 50px; /* Fixed width for input */
+    border: none; /* Remove default input border */
+    text-align: center; /* Center the text */
+    font-size: 18px; /* Adjust font size */
+}
+
+.quantity-button:hover {
+    background-color: #d0d0d0; /* Button hover effect */
+}
+
+.quantity-input:focus {
+    outline: none; /* Remove outline on focus */
+}
+
+
+// .product-sticky-footer__buy-options {
+//     display: flex;
+//     gap: $s-size; // Space between radio buttons
+// }
+
+// .product-sticky-footer__buy-option {
+//     display: flex;
+//     align-items: center;
+//     cursor: pointer;
+//     font-size: $s-size;
+//     color: $color-text-dark;
+
+//     input[type="radio"] {
+//         margin-right: 5px;
+//         appearance: none; // Hide default radio button
+//         width: 18px;
+//         height: 18px;
+//         border: 2px solid $color-border-grey;
+//         border-radius: 50%;
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         transition: all 0.2s ease-in-out;
+
+//         &::before {
+//             content: '';
+//             width: 10px;
+//             height: 10px;
+//             border-radius: 50%;
+//             background-color: $color-primary-blue;
+//             opacity: 0;
+//             transform: scale(0);
+//             transition: all 0.2s ease-in-out;
+//         }
+
+//         &:checked {
+//             border-color: $color-primary-blue;
+//             &::before {
+//                 opacity: 1;
+//                 transform: scale(1);
+//             }
+//         }
+
+//         &:disabled {
+//             background-color: #f0f0f0;
+//             cursor: not-allowed;
+//             border-color: #ccc;
+//             &::before {
+//                 background-color: #ccc;
+//             }
+//         }
+//     }
+// }
+
+
+.product-sticy-footer__product-image {
+  width: auto;
+  height: 100px;
+}
 
 .product-sticky-footer__add-to-bag-btn {
     background-color: $color-primary-blue;
